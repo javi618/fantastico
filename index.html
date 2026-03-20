@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fantástico — Debate y conexión</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300;1,9..144,500&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#F0EBE0;--card:#FFF;--header:#18140E;
+  --accent:#C93910;--accent-bg:#FBE9E3;
+  --warm:#F7F1E8;--warm2:#EDE5D6;
+  --text:#18140E;--t2:#6B6258;--t3:#A89E94;
+  --border:rgba(24,20,14,0.10);--border2:rgba(24,20,14,0.22);
+  --gold:#B8860B;--gold-bg:#FDF8EC;--gold-border:#E8D060;
+  --rose:#C0405A;--rose-bg:#FAE8EC;--rose-border:#F0B8C4;
+  --r:10px;--rs:6px;--rav:8px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
+
+header{background:var(--header);position:sticky;top:0;z-index:300;height:56px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.logo{display:flex;align-items:center;gap:9px;font-family:'Fraunces',serif;font-size:22px;font-weight:600;color:#fff;letter-spacing:-0.4px;text-decoration:none;flex-shrink:0;}
+.logo-mark{width:30px;height:30px;background:var(--accent);border-radius:8px 8px 8px 2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.logo-mark svg{width:16px;height:16px;}
+.header-nav{display:flex;align-items:center;gap:3px;}
+.hnav-btn{padding:5px 11px;border-radius:var(--rs);font-size:12px;font-family:'DM Sans',sans-serif;color:rgba(255,255,255,0.5);background:transparent;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;}
+.hnav-btn:hover{color:rgba(255,255,255,0.85);}
+.hnav-btn.on{color:#fff;background:rgba(255,255,255,0.1);}
+.hnav-btn svg{width:14px;height:14px;}
+.header-right{display:flex;align-items:center;gap:6px;}
+.btn-ghost{padding:5px 11px;border-radius:var(--rs);font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;color:rgba(255,255,255,0.6);background:transparent;border:1px solid rgba(255,255,255,0.15);cursor:pointer;white-space:nowrap;}
+.btn-ghost:hover{color:#fff;border-color:rgba(255,255,255,0.35);}
+.btn-acc{padding:5px 13px;border-radius:var(--rs);font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;color:#fff;background:var(--accent);border:none;cursor:pointer;white-space:nowrap;}
+.btn-acc:hover{opacity:.85;}
+.btn-new-poll{display:flex;align-items:center;gap:5px;padding:5px 12px;border-radius:var(--rs);font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;color:#fff;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);cursor:pointer;white-space:nowrap;}
+.btn-new-poll:hover{background:rgba(255,255,255,0.2);}
+.btn-new-poll svg{width:13px;height:13px;}
+.user-header-btn{display:flex;align-items:center;gap:7px;cursor:pointer;padding:4px 9px;border-radius:var(--rs);border:1px solid rgba(255,255,255,0.15);background:transparent;position:relative;}
+.user-hav{width:26px;height:26px;border-radius:var(--rav);background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;color:#fff;flex-shrink:0;}
+.user-hname{font-size:12px;color:rgba(255,255,255,0.85);font-family:'DM Sans',sans-serif;}
+.notif-dot{position:absolute;top:3px;right:7px;width:7px;height:7px;border-radius:50%;background:#EF9F27;border:2px solid var(--header);}
+
+/* LEVEL */
+.lv{display:inline-flex;align-items:center;font-size:9px;font-weight:500;padding:2px 7px;border-radius:99px;white-space:nowrap;}
+.lv1{background:#F1EFE8;color:#888780;border:1px solid #D3D1C7;}
+.lv2{background:#E3F5EC;color:#0A6835;border:1px solid #9FE1CB;}
+.lv3{background:#E6F1FB;color:#185FA5;border:1px solid #85B7EB;}
+.lv4{background:#EDE8FC;color:#5528A8;border:1px solid #AFA9EC;}
+.lv5{background:#FAF0E4;color:#924D0C;border:1px solid #FAC775;}
+
+/* DROPDOWN */
+.user-dropdown{position:absolute;top:61px;right:20px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);min-width:280px;box-shadow:0 8px 32px rgba(0,0,0,0.14);z-index:400;overflow:hidden;display:none;}
+.user-dropdown.open{display:block;}
+.udrop-profile{padding:13px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:11px;}
+.udrop-av{width:38px;height:38px;border-radius:var(--rav);background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:#fff;flex-shrink:0;}
+.udrop-name{font-size:14px;font-weight:500;color:var(--text);}
+.udrop-stats{font-size:11px;color:var(--t3);margin-top:2px;}
+.notif-item{display:flex;align-items:flex-start;gap:9px;padding:8px 14px;cursor:pointer;border-bottom:1px solid var(--border);}
+.notif-item:hover{background:var(--bg);}
+.notif-item:last-child{border-bottom:none;}
+.notif-av{width:24px;height:24px;border-radius:var(--rav);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;flex-shrink:0;}
+.notif-body{flex:1;min-width:0;}
+.notif-text{font-size:12px;color:var(--t2);line-height:1.4;}
+.notif-text strong{color:var(--text);}
+.notif-time{font-size:10px;color:var(--t3);margin-top:1px;}
+.notif-unread-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:5px;}
+.udrop-lbl{font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;padding:6px 14px 4px;display:flex;align-items:center;justify-content:space-between;}
+.notif-badge{background:var(--accent);color:#fff;font-size:10px;font-weight:500;padding:1px 6px;border-radius:99px;}
+.udrop-footer{padding:9px 14px;border-top:1px solid var(--border);display:flex;justify-content:space-between;}
+.udrop-link{font-size:12px;color:var(--t2);cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;padding:0;}
+.udrop-link:hover{color:var(--accent);}
+.udrop-link.red:hover{color:#A32D2D;}
+
+/* MODALS */
+.modal-overlay{position:fixed;inset:0;background:rgba(24,20,14,0.5);z-index:500;display:none;align-items:center;justify-content:center;padding:12px;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--card);border-radius:var(--r);width:100%;max-width:380px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.2);}
+.modal-lg{max-width:520px;}
+.modal-xl{max-width:600px;}
+.modal-head{padding:17px 17px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.modal-title{font-family:'Fraunces',serif;font-size:19px;font-weight:300;color:var(--text);}
+.modal-subtitle{font-size:11px;color:var(--t3);margin-top:2px;}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--t3);font-size:20px;line-height:1;padding:0;flex-shrink:0;margin-top:2px;}
+.modal-close:hover{color:var(--text);}
+.modal-body{padding:17px;max-height:84vh;overflow-y:auto;}
+.m-field{margin-bottom:13px;}
+.m-field label{display:block;font-size:12px;color:var(--t2);margin-bottom:4px;font-weight:500;}
+.m-field input,.m-field textarea,.m-field select{width:100%;border:1px solid var(--border);border-radius:var(--rs);padding:8px 10px;font-size:13px;color:var(--text);background:var(--bg);outline:none;font-family:'DM Sans',sans-serif;transition:border-color .15s;resize:none;}
+.m-field input:focus,.m-field textarea:focus,.m-field select:focus{border-color:var(--accent);}
+.hint{font-size:11px;color:var(--t3);margin-top:3px;}
+.m-error{font-size:12px;color:#A32D2D;margin-bottom:9px;display:none;}
+.m-error.show{display:block;}
+.m-submit{width:100%;padding:10px;background:var(--accent);color:#fff;border:none;border-radius:var(--rs);font-size:14px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:3px;}
+.m-submit:hover{opacity:.85;}
+.m-divider{text-align:center;font-size:12px;color:var(--t3);margin:11px 0;}
+.m-google{width:100%;padding:8px;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:var(--rs);font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.m-google:hover{background:var(--bg);}
+.m-footer{font-size:12px;color:var(--t3);text-align:center;margin-top:11px;}
+.m-footer span{color:var(--accent);cursor:pointer;}
+.char-count{font-size:10px;color:var(--t3);text-align:right;margin-top:2px;}
+.opt-field{display:flex;gap:7px;align-items:center;margin-bottom:7px;}
+.opt-field input{flex:1;}
+.opt-num{width:19px;height:19px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--t3);flex-shrink:0;}
+.sec-div{height:1px;background:var(--border);margin:14px 0;}
+.prev-opt{border:1px solid var(--border);border-radius:var(--rs);padding:6px 10px;font-size:13px;color:var(--t2);background:var(--bg);margin-bottom:5px;}
+.info-box{border-radius:var(--rs);padding:9px 11px;margin-bottom:13px;font-size:11px;line-height:1.6;}
+.info-amber{background:#F5EDD8;color:#8A6020;border:1px solid #E8D4A0;}
+.info-green{background:#E3F5EC;color:#0A6835;}
+.info-blue{background:#E6F1FB;color:#185FA5;}
+.info-rose{background:var(--rose-bg);color:var(--rose);border:1px solid var(--rose-border);}
+.btc-box{background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:14px;margin-bottom:13px;text-align:center;}
+.btc-amount{font-family:'Fraunces',serif;font-size:26px;font-weight:300;color:var(--text);}
+.btc-eur{font-size:12px;color:var(--t3);margin-top:2px;}
+.btc-addr{font-family:monospace;font-size:11px;color:var(--t2);background:var(--card);border:1px solid var(--border);border-radius:4px;padding:5px 9px;margin-top:9px;word-break:break-all;}
+.btc-steps{display:flex;flex-direction:column;gap:7px;margin-bottom:13px;}
+.btc-step{display:flex;align-items:flex-start;gap:7px;font-size:12px;color:var(--t2);}
+.btc-step-n{width:17px;height:17px;border-radius:50%;background:var(--accent);color:#fff;font-size:10px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+
+/* AVATAR (square rounded) */
+.av{border-radius:var(--rav);display:flex;align-items:center;justify-content:center;font-weight:500;flex-shrink:0;}
+
+/* AVATAR GRID */
+.av-grid{display:flex;flex-direction:column;align-items:flex-end;gap:3px;flex-shrink:0;}
+.av-grid-row{display:flex;gap:3px;}
+.av-grid-cell{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;flex-shrink:0;position:relative;cursor:pointer;border:1.5px solid transparent;}
+.av-grid-cell.creator{border-color:var(--accent);}
+.av-grid-cell.topheart{border-color:#E8A020;}
+.av-grid-cell .av-badge{position:absolute;bottom:-3px;right:-3px;width:12px;height:12px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:7px;background:var(--card);border:1px solid var(--border);}
+.av-grid-cell:hover{opacity:.85;}
+
+/* NEWS VOTING */
+.news-vote-row{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);}
+.news-vote-row:last-child{border-bottom:none;}
+.nvr-body{flex:1;min-width:0;}
+.nvr-title{font-size:12px;color:var(--t2);line-height:1.4;margin-bottom:2px;}
+.nvr-title.rejected{text-decoration:line-through;opacity:.5;}
+.nvr-meta{font-size:10px;color:var(--t3);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.nvr-status{font-size:9px;padding:2px 6px;border-radius:99px;font-weight:500;}
+.nvr-pending{background:#FFF0E0;color:#934A00;}
+.nvr-approved{background:#E3F5EC;color:#0A6835;}
+.nvr-bar{height:3px;background:var(--border);border-radius:99px;margin-top:4px;overflow:hidden;}
+.nvr-bar-fill{height:100%;background:#128A52;border-radius:99px;transition:width .4s;}
+.nvr-votes{display:flex;gap:4px;align-items:center;flex-shrink:0;}
+.nvr-vote{display:flex;align-items:center;gap:3px;padding:3px 7px;border-radius:99px;font-size:11px;font-weight:500;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;}
+.nvr-ok{background:#E3F5EC;color:#0A6835;}.nvr-ok:hover{background:#C0DD97;}.nvr-ok.voted{background:#128A52;color:#fff;}
+.nvr-ko{background:#FCEBEB;color:#A32D2D;}.nvr-ko:hover{background:#F7C1C1;}.nvr-ko.voted{background:#A32D2D;color:#fff;}
+.news-section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+.add-news-btn{display:flex;align-items:center;gap:5px;padding:4px 9px;border-radius:var(--rs);font-size:11px;font-weight:500;color:var(--t2);background:transparent;border:1px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif;}
+.add-news-btn:hover{border-color:var(--border2);color:var(--text);}
+.add-news-btn.locked{color:var(--t3);cursor:default;}
+.add-news-btn.locked:hover{border-color:var(--border);color:var(--t3);}
+
+/* LAYOUT */
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px 20px;display:grid;grid-template-columns:220px 1fr 210px;gap:20px;}
+.sl{position:sticky;top:76px;height:fit-content;display:flex;flex-direction:column;gap:12px;}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:13px;}
+.panel-lbl{font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px;}
+
+/* WARM HERO */
+.hero{background:linear-gradient(135deg,#1A0F08 0%,#2A1410 50%,#18140E 100%);padding:28px 20px 24px;border-bottom:1px solid rgba(201,57,16,0.2);}
+.hero-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.hero-text .eyebrow{font-size:11px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;}
+.hero-text h1{font-family:'Fraunces',serif;font-size:26px;font-weight:300;color:#fff;line-height:1.35;margin-bottom:8px;}
+.hero-text h1 em{color:#E8704A;font-style:normal;}
+.hero-text p{font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;max-width:380px;}
+.hero-stats{display:flex;gap:20px;flex-shrink:0;}
+.hero-stat{text-align:center;}
+.hero-stat-val{font-family:'Fraunces',serif;font-size:22px;font-weight:300;color:#fff;display:block;}
+.hero-stat-lbl{font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;display:block;}
+
+/* CATEGORIES */
+.cat-row{display:flex;align-items:center;gap:8px;padding:5px 7px;border-radius:var(--rs);cursor:pointer;font-size:13px;color:var(--t2);margin-bottom:1px;border:none;background:transparent;font-family:'DM Sans',sans-serif;width:100%;text-align:left;transition:all .12s;}
+.cat-row:hover{background:var(--bg);}
+.cat-row.on{background:var(--accent-bg);color:var(--accent);font-weight:500;}
+.cat-row.sponsored-cat{background:var(--gold-bg);color:var(--gold);}
+.cat-row.sponsored-cat.on{border:1px solid var(--gold-border);}
+.cat-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.cat-count{margin-left:auto;font-size:11px;color:#5F5E5A;font-weight:500;}
+.cat-chev{margin-left:2px;color:var(--t3);transition:transform .2s;display:flex;align-items:center;flex-shrink:0;}
+.cat-chev svg{width:11px;height:11px;}
+.cat-chev.open{transform:rotate(180deg);}
+.subcats{overflow:hidden;max-height:0;transition:max-height .22s ease;}
+.subcats.open{max-height:300px;}
+.subcat-row{display:flex;align-items:center;gap:8px;padding:4px 7px 4px 21px;border-radius:var(--rs);cursor:pointer;font-size:12px;color:var(--t3);border:none;background:transparent;font-family:'DM Sans',sans-serif;width:100%;text-align:left;transition:all .12s;}
+.subcat-row:hover{color:var(--t2);background:var(--bg);}
+.subcat-row.on{color:var(--accent);font-weight:500;}
+.subcat-dot{width:5px;height:5px;border-radius:50%;background:var(--border2);flex-shrink:0;}
+
+/* USERS */
+.wgt-title{font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px;}
+.wgt-tabs{display:flex;gap:2px;background:var(--bg);border-radius:var(--rs);padding:3px;margin-bottom:8px;}
+.wt{flex:1;padding:4px 0;font-size:11px;text-align:center;border-radius:4px;cursor:pointer;color:var(--t3);border:none;background:transparent;font-family:'DM Sans',sans-serif;transition:all .12s;}
+.wt.on{background:var(--card);color:var(--text);font-weight:500;border:1px solid var(--border);}
+.usr-row{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.usr-row:hover .usr-name{color:var(--accent);}
+.usr-row:last-child{border-bottom:none;padding-bottom:0;}
+.usr-rank{font-family:'Fraunces',serif;font-size:16px;font-weight:300;color:var(--t3);min-width:16px;}
+.usr-av{width:24px;height:24px;border-radius:var(--rav);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;flex-shrink:0;}
+.usr-info{flex:1;min-width:0;}
+.usr-name{font-size:12px;font-weight:500;color:var(--t2);transition:color .12s;}
+.usr-val{font-size:10px;color:var(--t3);}
+
+/* FEED */
+.feed-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px;}
+.feed-eyebrow{font-family:'Fraunces',serif;font-size:15px;font-weight:300;font-style:italic;color:var(--t2);}
+.sort-grp{display:flex;background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:3px;gap:2px;}
+.srt{padding:4px 10px;font-size:12px;border-radius:4px;cursor:pointer;color:var(--t2);background:transparent;border:none;font-family:'DM Sans',sans-serif;transition:all .12s;}
+.srt.on{background:var(--text);color:#fff;}
+
+/* POLL CARD */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);margin-bottom:11px;overflow:hidden;cursor:pointer;transition:border-color .15s;}
+.card:hover{border-color:var(--border2);}
+.card.sponsored-card{border-color:var(--gold-border);}
+.sponsored-label{display:flex;align-items:center;gap:5px;padding:5px 14px;font-size:10px;font-weight:500;color:var(--gold);border-bottom:1px solid var(--gold-border);}
+.sponsored-label svg{width:11px;height:11px;}
+.card-head{padding:12px 14px 0;display:flex;align-items:flex-start;gap:10px;}
+.card-head-left{flex:1;min-width:0;}
+.card-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:7px;}
+.badge{display:inline-flex;align-items:center;font-size:10px;font-weight:500;padding:3px 8px;border-radius:99px;}
+.bg-pol{background:#E8EFFC;color:#1A3FA8;}.bg-soc{background:#FCE8F3;color:#9E1060;}
+.bg-eco{background:#E3F5EC;color:#0A6835;}.bg-tec{background:#EDE8FC;color:#5528A8;}
+.bg-dep{background:#FFF0E0;color:#934A00;}.bg-int{background:#E3F0FB;color:#0A4A7A;}
+.bg-ent{background:#FEF0F9;color:#871060;}.bg-hot{background:var(--accent);color:#fff;}
+.bg-spon{background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-border);}
+.card-time{font-size:11px;color:var(--t3);}
+.card-q{font-family:'Fraunces',serif;font-size:15px;font-weight:300;line-height:1.44;color:var(--text);}
+.card-body{padding:10px 14px 9px;}
+.opts{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;}
+.opt{position:relative;border:1px solid var(--border);border-radius:var(--rs);overflow:hidden;padding:7px 10px;display:flex;align-items:center;justify-content:space-between;transition:border-color .15s;}
+.opt:hover{border-color:var(--border2);}.opt.win{border-color:var(--accent);}
+.opt-bar{position:absolute;inset:0;height:100%;background:var(--accent);opacity:.08;transition:width .6s ease;pointer-events:none;}
+.opt-bar-b{background:#888;}.opt-bar-c{background:#C41A7A;}
+.opt-lbl{font-size:13px;color:var(--text);position:relative;}
+.opt-pct{font-size:12px;font-weight:500;color:var(--t3);position:relative;}
+.opt.win .opt-pct{color:var(--accent);}
+.card-foot{display:flex;align-items:center;gap:11px;flex-wrap:wrap;}
+.stat{font-size:11px;color:var(--t3);}
+.eng-pill{margin-left:auto;display:flex;align-items:center;gap:4px;padding:3px 7px;border-radius:99px;font-size:10px;font-weight:500;}
+.eng-1{background:#E3F5EC;color:#0A6835;}.eng-2{background:#FFF0E0;color:#934A00;}.eng-3{background:#FBE9E3;color:var(--accent);}
+.eng-dot{width:5px;height:5px;border-radius:50%;}
+.eng-1 .eng-dot{background:#128A52;}.eng-2 .eng-dot{background:#D46A00;}.eng-3 .eng-dot{background:var(--accent);}
+.timer{display:flex;align-items:center;gap:4px;font-size:11px;}
+.timer svg{width:11px;height:11px;flex-shrink:0;}
+.timer.urgent{color:var(--accent);}.timer.normal{color:var(--t3);}.timer.closed{color:var(--t3);}
+
+/* NEWS */
+.news{border-top:1px solid var(--border);padding:8px 14px;}
+.news-lbl{font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.ni{display:flex;align-items:flex-start;gap:7px;padding:3px 0;}
+.ni-dot{width:4px;height:4px;border-radius:50%;background:var(--t3);flex-shrink:0;margin-top:5px;}
+.ni-t{font-size:12px;color:var(--t2);line-height:1.4;}.ni-s{font-size:10px;color:var(--t3);margin-top:1px;}
+.expand-row{display:flex;align-items:center;gap:5px;padding:4px 0 1px;cursor:pointer;border:none;background:transparent;font-family:'DM Sans',sans-serif;}
+.expand-row:hover .expand-lbl,.expand-row:hover .expand-ico{color:var(--accent);}
+.expand-lbl{font-size:11px;color:var(--t3);transition:color .12s;}
+.expand-ico{color:var(--t3);transition:color .12s;display:flex;align-items:center;}
+.expand-ico svg{width:13px;height:13px;}
+.top-cmt-wrap{border-top:1px solid var(--border);padding:8px 14px 10px;background:rgba(240,235,224,0.35);}
+.tcp-lbl{font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.tcp-row{display:flex;gap:8px;align-items:flex-start;}
+.tcp-av{width:22px;height:22px;border-radius:var(--rav);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:500;flex-shrink:0;margin-top:1px;cursor:pointer;}
+.tcp-av:hover{opacity:.8;}
+.tcp-body{flex:1;min-width:0;}
+.tcp-meta{display:flex;align-items:center;gap:6px;margin-bottom:3px;flex-wrap:wrap;}
+.tcp-user{font-size:11px;font-weight:500;color:var(--t2);cursor:pointer;}
+.tcp-user:hover{color:var(--accent);}
+.tcp-stance{font-size:9px;padding:2px 6px;border-radius:99px;font-weight:500;}
+.tcp-likes{font-size:10px;color:var(--t3);margin-left:auto;display:flex;align-items:center;gap:3px;}
+.tcp-txt{font-size:12px;color:var(--t2);line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+
+/* SIDEBAR R */
+.sr{position:sticky;top:76px;height:fit-content;display:flex;flex-direction:column;gap:11px;}
+.trend{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.trend:hover .trend-qt{color:var(--accent);}
+.trend:last-child{border-bottom:none;padding-bottom:0;}
+.trend-n{font-family:'Fraunces',serif;font-size:18px;font-weight:300;color:var(--t3);line-height:1;min-width:19px;}
+.trend-qt{font-size:12px;color:var(--t2);line-height:1.4;transition:color .12s;}
+.trend-v{font-size:10px;color:var(--t3);margin-top:2px;}
+.stat-grid{display:flex;flex-direction:column;gap:9px;}
+.sg-row{display:flex;align-items:baseline;justify-content:space-between;}
+.sg-lbl{font-size:12px;color:var(--t2);}
+.sg-val{font-family:'Fraunces',serif;font-size:19px;font-weight:300;color:var(--accent);}
+.nwi{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);cursor:pointer;align-items:flex-start;}
+.nwi:hover .nwi-t{color:var(--accent);}
+.nwi:last-child{border-bottom:none;padding-bottom:0;}
+.nwi-img{width:46px;height:36px;border-radius:5px;object-fit:cover;flex-shrink:0;}
+.nwi-t{font-size:12px;color:var(--t2);line-height:1.4;transition:color .12s;margin-bottom:2px;}
+.nwi-meta{font-size:10px;color:var(--t3);}
+.nwi-cmts{color:var(--accent);font-weight:500;}
+
+/* THREAD */
+#thread{display:none;}
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--t2);cursor:pointer;margin-bottom:15px;border:none;background:none;font-family:'DM Sans',sans-serif;transition:color .12s;padding:0;}
+.back-btn:hover{color:var(--accent);}
+.thread-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
+.thread-body{padding:18px;}
+.thread-q{font-family:'Fraunces',serif;font-size:19px;font-weight:300;line-height:1.42;margin-bottom:15px;}
+.t-opt.sel{border-color:var(--accent);background:var(--accent-bg);}
+.t-opt.sel .opt-lbl{color:var(--accent);}
+.vote-hint{font-size:12px;color:var(--t3);margin-top:8px;font-style:italic;}
+.thread-stats{font-size:11px;color:var(--t3);margin-top:8px;}
+.divider{height:1px;background:var(--border);}
+.cmt-bar{padding:9px 18px;display:flex;align-items:center;justify-content:space-between;}
+.cmt-sort{display:flex;gap:11px;}
+.cs{font-size:12px;color:var(--t3);cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;transition:color .12s;padding:0;}
+.cs.on{color:var(--text);font-weight:500;}
+.cmt-total{font-size:12px;color:var(--t3);}
+.cmt{padding:12px 18px;border-top:1px solid var(--border);}
+.cm-top{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:7px;}
+.cm-av{width:26px;height:26px;border-radius:var(--rav);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:500;flex-shrink:0;cursor:pointer;}
+.cm-user{font-size:13px;font-weight:500;color:var(--text);cursor:pointer;}
+.cm-user:hover{color:var(--accent);}
+.stance{font-size:10px;padding:2px 7px;border-radius:99px;font-weight:500;}
+.cm-time{font-size:11px;color:var(--t3);margin-left:auto;}
+.cm-txt{font-size:13px;color:var(--text);line-height:1.65;margin-bottom:8px;}
+.cm-acts{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.like-btn{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--t3);cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;padding:0;transition:color .15s;}
+.like-btn:hover{color:var(--accent);}.like-btn.liked{color:var(--accent);}
+.like-btn svg{width:13px;height:13px;transition:transform .15s;flex-shrink:0;}
+.like-btn.liked svg{transform:scale(1.2);}
+.act-sep{width:1px;height:11px;background:var(--border);flex-shrink:0;}
+.rep-btn,.rpt-btn,.ign-btn{font-size:11px;color:var(--t3);cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;padding:0;transition:color .12s;white-space:nowrap;}
+.rep-btn:hover{color:var(--text);}.rpt-btn:hover{color:#A32D2D;}.ign-btn:hover{color:var(--t2);}
+.ignore-menu{display:none;position:absolute;background:var(--card);border:1px solid var(--border);border-radius:var(--rs);box-shadow:0 4px 16px rgba(0,0,0,.10);z-index:10;min-width:185px;overflow:hidden;}
+.ignore-menu.open{display:block;}
+.ign-opt{display:block;width:100%;padding:8px 12px;font-size:12px;color:var(--t2);background:none;border:none;font-family:'DM Sans',sans-serif;cursor:pointer;text-align:left;}
+.ign-opt:hover{background:var(--bg);color:var(--text);}
+.ign-wrap{position:relative;}
+.compose{padding:12px 18px;background:var(--bg);display:flex;gap:8px;align-items:center;border-top:1px solid var(--border);}
+.compose input{flex:1;border:1px solid var(--border);border-radius:var(--rs);padding:8px 11px;font-size:13px;background:var(--card);color:var(--t2);outline:none;font-family:'DM Sans',sans-serif;transition:border-color .15s;}
+.compose input:focus{border-color:var(--accent);}
+.compose input:disabled{background:var(--bg);cursor:not-allowed;}
+
+/* PROFILE MODAL — full feature */
+.profile-modal{background:var(--card);border-radius:var(--r);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;}
+.pm-cover{height:84px;background:linear-gradient(135deg,#18140E 0%,#C93910 100%);position:relative;}
+.pm-av-wrap{position:absolute;bottom:-26px;left:18px;}
+.pm-av{width:54px;height:54px;border-radius:var(--rav);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:500;border:3px solid var(--card);}
+.pm-body{padding:34px 18px 18px;}
+.pm-name-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:2px;}
+.pm-name{font-size:16px;font-weight:500;color:var(--text);}
+.pm-location{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--t3);margin-bottom:5px;}
+.pm-location svg{width:11px;height:11px;}
+.pm-demo{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
+.pm-demo-pill{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--bg);color:var(--t2);border:1px solid var(--border);}
+.pm-bio{font-size:12px;color:var(--t2);line-height:1.55;margin-bottom:12px;}
+.pm-actions{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+.pm-btn{padding:6px 12px;border-radius:var(--rs);font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all .15s;border:1px solid var(--border);background:transparent;color:var(--t2);}
+.pm-btn:hover{background:var(--bg);}
+.pm-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.pm-btn.primary:hover{opacity:.85;}
+.pm-btn.rose{background:var(--rose-bg);color:var(--rose);border-color:var(--rose-border);}
+.pm-btn.rose:hover{background:var(--rose-border);}
+.pm-btn.rose.matched{background:var(--rose);color:#fff;border-color:var(--rose);}
+.match-note{font-size:11px;color:var(--rose);display:flex;align-items:center;gap:4px;margin-bottom:12px;}
+.match-note svg{width:13px;height:13px;}
+.pm-section{margin-bottom:14px;}
+.pm-section-lbl{font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;}
+.pm-stats-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;}
+.pm-stat{background:var(--bg);border-radius:var(--rs);padding:8px;text-align:center;}
+.pm-stat-val{font-family:'Fraunces',serif;font-size:18px;font-weight:300;color:var(--accent);display:block;}
+.pm-stat-lbl{font-size:10px;color:var(--t3);display:block;margin-top:1px;}
+.pm-insights{display:flex;flex-direction:column;gap:6px;}
+.pm-insight{display:flex;align-items:center;gap:8px;padding:7px 9px;background:var(--bg);border-radius:var(--rs);}
+.pm-ins-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;}
+.pm-ins-label{font-size:12px;color:var(--t2);flex:1;}
+.pm-ins-val{font-size:13px;font-weight:500;color:var(--text);}
+.pm-bar-track{height:3px;background:var(--border);border-radius:99px;overflow:hidden;margin-top:4px;}
+.pm-bar-fill{height:100%;border-radius:99px;background:var(--accent);}
+
+/* PROFILE TABS */
+.pm-tabs{display:flex;gap:2px;background:var(--bg);border-radius:var(--rs);padding:3px;margin-bottom:12px;}
+.pm-tab{flex:1;padding:5px 0;font-size:11px;text-align:center;border-radius:4px;cursor:pointer;color:var(--t3);border:none;background:transparent;font-family:'DM Sans',sans-serif;transition:all .12s;}
+.pm-tab.on{background:var(--card);color:var(--text);font-weight:500;border:1px solid var(--border);}
+.history-filters{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.hf-btn{padding:3px 9px;border-radius:99px;font-size:11px;border:1px solid var(--border);color:var(--t2);background:transparent;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.hf-btn.on{background:var(--text);color:#fff;border-color:var(--text);}
+.history-item{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--border);}
+.history-item:last-child{border-bottom:none;}
+.hi-icon{width:28px;height:28px;border-radius:var(--rav);display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;margin-top:1px;}
+.hi-body{flex:1;min-width:0;}
+.hi-q{font-size:12px;color:var(--t2);line-height:1.4;margin-bottom:3px;}
+.hi-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.hi-stance{font-size:9px;padding:2px 7px;border-radius:99px;font-weight:500;}
+.hi-time{font-size:10px;color:var(--t3);}
+.hi-likes{font-size:10px;color:var(--t3);display:flex;align-items:center;gap:3px;}
+
+/* MATCH BANNER */
+.match-banner{background:linear-gradient(135deg,var(--rose-bg),#FDF0F5);border:1px solid var(--rose-border);border-radius:var(--r);padding:14px 16px;margin-bottom:11px;display:flex;align-items:center;gap:12px;}
+.match-banner-av{width:36px;height:36px;border-radius:var(--rav);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;}
+.match-banner-text{flex:1;}
+.match-banner-title{font-size:13px;font-weight:500;color:var(--rose);margin-bottom:2px;}
+.match-banner-sub{font-size:11px;color:var(--t2);}
+.match-banner-btn{padding:6px 13px;border-radius:var(--rs);background:var(--rose);color:#fff;border:none;font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;flex-shrink:0;}
+
+/* STATS */
+#stats-view{display:none;max-width:1100px;margin:0 auto;padding:20px 16px;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;}
+.sc-label{font-size:11px;color:var(--t3);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;font-weight:500;}
+.sc-val{font-family:'Fraunces',serif;font-size:28px;font-weight:300;color:var(--text);margin-bottom:2px;}
+.sc-delta{font-size:11px;}
+.sc-delta.up{color:#128A52;}.sc-delta.dn{color:var(--accent);}
+.chart-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:14px;margin-bottom:10px;}
+.chart-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:12px;}
+.chart-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.top-polls-table{width:100%;border-collapse:collapse;font-size:12px;}
+.top-polls-table th{text-align:left;padding:6px 9px;font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);}
+.top-polls-table td{padding:8px 9px;border-bottom:1px solid var(--border);color:var(--t2);}
+.top-polls-table tr:last-child td{border-bottom:none;}
+.top-polls-table td:first-child{color:var(--text);font-weight:500;}
+
+.mob-bar{display:none;background:var(--card);border-bottom:1px solid var(--border);padding:8px 14px;overflow-x:auto;gap:7px;scrollbar-width:none;}
+.mob-bar::-webkit-scrollbar{display:none;}
+.mob-chip{white-space:nowrap;padding:5px 12px;border-radius:99px;font-size:12px;border:1px solid var(--border);color:var(--t2);cursor:pointer;background:transparent;font-family:'DM Sans',sans-serif;}
+.mob-chip.on{background:var(--text);color:#fff;border-color:var(--text);}
+
+@keyframes up{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.card{animation:up .22s ease both;}
+
+@media(max-width:820px){
+  .wrap{grid-template-columns:1fr;padding:0 10px 16px;}
+  .sl,.sr{display:none;}
+  .mob-bar{display:flex;}
+  .thread-q{font-size:17px;}
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .chart-row{grid-template-columns:1fr;}
+  .btn-new-poll span{display:none;}
+  .hero-stats{display:none;}
+}
+.btn-new-poll-feed{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:var(--rs);font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;color:var(--t2);background:var(--card);border:1px solid var(--border);cursor:pointer;transition:all .15s;}
+.btn-new-poll-feed:hover{border-color:var(--border2);color:var(--text);}
+.cat-panel-body{overflow:hidden;transition:max-height .28s ease;}
+.cat-panel-body.collapsed{max-height:0;}
+.cat-panel-body.expanded{max-height:600px;}
+.cat-panel-hdr{display:flex;align-items:center;justify-content:space-between;padding-bottom:7px;}
+.cat-expand-btn{background:none;border:none;cursor:pointer;color:var(--t3);display:flex;align-items:center;padding:0;transition:transform .2s;}
+.cat-expand-btn.open{transform:rotate(180deg);}
+.cat-expand-btn svg{width:13px;height:13px;}
+.cmt.ignored-peek{position:relative;cursor:pointer;}
+.cmt.ignored-peek > *{opacity:0.2;pointer-events:none;}
+.cmt.ignored-peek::after{content:'Usuario ignorado · clic para ver';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--t3);font-family:'DM Sans',sans-serif;cursor:pointer;}
+/* CARD ACTIONS: save + share */
+.card-actions{display:flex;align-items:center;gap:4px;padding:7px 14px;border-top:1px solid var(--border);background:var(--bg);}
+.card-act-btn{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:var(--rs);color:var(--t3);background:transparent;border:none;cursor:pointer;transition:all .12s;}
+.card-act-btn:hover{color:var(--text);background:rgba(24,20,14,0.05);}
+.card-act-btn.saved{color:var(--accent);}
+.card-act-btn svg{width:14px;height:14px;flex-shrink:0;}
+/* SHARE POPUP — centered overlay */
+.share-popup{background:var(--card);border-radius:var(--r);width:100%;max-width:400px;box-shadow:0 16px 48px rgba(0,0,0,0.2);padding:20px;position:relative;}
+.share-backdrop{position:fixed;inset:0;background:rgba(24,20,14,0.5);z-index:600;display:none;align-items:center;justify-content:center;}
+.share-backdrop.open{display:flex;}
+.share-title{font-family:'Fraunces',serif;font-size:16px;font-weight:300;color:var(--text);margin-bottom:14px;}
+.share-url{display:flex;gap:8px;align-items:center;background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);padding:8px 12px;margin-bottom:14px;}
+.share-url-text{flex:1;font-size:12px;color:var(--t2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:monospace;}
+.share-copy-btn{font-size:11px;color:var(--accent);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;font-weight:500;}
+.share-nets{display:flex;gap:8px;flex-wrap:wrap;}
+.share-net{display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 12px;border-radius:var(--r);background:var(--bg);border:1px solid var(--border);cursor:pointer;font-size:11px;color:var(--t2);transition:all .12s;font-family:'DM Sans',sans-serif;min-width:70px;}
+.share-net:hover{border-color:var(--border2);color:var(--text);}
+.share-net-icon{width:24px;height:24px;flex-shrink:0;}
+.share-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:18px;color:var(--t3);cursor:pointer;}
+/* HEADER ICON BUTTONS */
+.hdr-icon-btn{width:32px;height:32px;border-radius:var(--rs);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.7);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;}
+.hdr-icon-btn:hover{background:rgba(255,255,255,0.18);color:#fff;}
+.hdr-icon-btn svg{width:15px;height:15px;}
+/* SEARCH MODAL */
+.search-results{margin-top:12px;display:flex;flex-direction:column;gap:8px;}
+.sr-item{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg);border-radius:var(--rs);cursor:pointer;border:1px solid transparent;transition:border-color .12s;}
+.sr-item:hover{border-color:var(--border2);}
+.sr-av{width:36px;height:36px;border-radius:var(--rav);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.sr-info{flex:1;min-width:0;}
+.sr-name{font-size:13px;font-weight:500;color:var(--text);}
+.sr-meta{font-size:11px;color:var(--t3);margin-top:2px;}
+.sr-aff{font-size:11px;font-weight:500;color:var(--accent);}
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.filter-grp{display:flex;flex-direction:column;gap:4px;flex:1;min-width:100px;}
+.filter-grp label{font-size:11px;color:var(--t2);font-weight:500;}
+.filter-grp select,.filter-grp input{width:100%;border:1px solid var(--border);border-radius:var(--rs);padding:6px 9px;font-size:12px;color:var(--text);background:var(--bg);outline:none;font-family:'DM Sans',sans-serif;}
+.filter-grp select:focus,.filter-grp input:focus{border-color:var(--accent);}
+/* HELP SECTION */
+#help-view{display:none;max-width:760px;margin:0 auto;padding:24px 16px;}
+.help-section{margin-bottom:28px;}
+.help-h1{font-family:'Fraunces',serif;font-size:26px;font-weight:300;color:var(--text);margin-bottom:6px;}
+.help-h2{font-family:'Fraunces',serif;font-size:18px;font-weight:300;color:var(--text);margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border);}
+.help-p{font-size:13px;color:var(--t2);line-height:1.75;margin-bottom:10px;}
+.help-level-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:10px;}
+.help-lv-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:12px;text-align:center;}
+.help-lv-name{font-size:11px;font-weight:500;color:var(--text);margin:6px 0 4px;}
+.help-lv-req{font-size:10px;color:var(--t3);margin-bottom:6px;}
+.help-lv-perks{font-size:11px;color:var(--t2);line-height:1.6;text-align:left;}
+.help-faq{display:flex;flex-direction:column;gap:8px;}
+.help-q{background:var(--card);border:1px solid var(--border);border-radius:var(--rs);padding:12px 14px;cursor:pointer;}
+.help-q-title{font-size:13px;font-weight:500;color:var(--text);display:flex;justify-content:space-between;align-items:center;}
+.help-q-body{font-size:12px;color:var(--t2);line-height:1.65;margin-top:8px;display:none;}
+.help-q.open .help-q-body{display:block;}
+.help-q.open .help-q-chev{transform:rotate(180deg);}
+.help-q-chev{transition:transform .2s;flex-shrink:0;}
+
+</style>
+</head>
+<body>
+
+<header>
+  <a class="logo" href="#" onclick="goHome()">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- chat bubble -->
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" fill="rgba(255,255,255,0.15)" stroke="white" stroke-width="1.5" stroke-linejoin="round"/>
+        <!-- heart inside -->
+        <path d="M12 13.5s-3-1.8-3-3.7c0-1.1.9-1.8 1.8-1.8.6 0 1.1.3 1.2.6.1-.3.6-.6 1.2-.6.9 0 1.8.7 1.8 1.8C15 11.7 12 13.5 12 13.5z" fill="white"/>
+      </svg>
+    </div>
+    Fantástico
+  </a>
+  <div style="display:flex;align-items:center;flex:1;max-width:320px;margin:0 20px;">
+    <button onclick="openSearch()" style="display:flex;align-items:center;gap:8px;width:100%;padding:7px 14px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:var(--rs);cursor:pointer;font-family:'DM Sans',sans-serif;color:rgba(255,255,255,0.6);font-size:12px;transition:all .15s;" onmouseover="this.style.background='rgba(255,255,255,0.14)';this.style.color='rgba(255,255,255,0.9)'" onmouseout="this.style.background='rgba(255,255,255,0.08)';this.style.color='rgba(255,255,255,0.6)'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;flex-shrink:0;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      Buscar personas afines...
+    </button>
+  </div>
+  <div class="header-right" id="header-right">
+    <button class="hdr-icon-btn" onclick="showView('help',this)" title="Ayuda">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </button>
+    <button class="hnav-btn" onclick="showView('stats',this)" style="border:1px solid rgba(255,255,255,0.15);padding:5px 10px;font-size:11px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:13px;height:13px;"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      Stats
+    </button>
+    <button class="btn-ghost" onclick="openLogin()">Entrar</button>
+    <button class="btn-acc" onclick="openLogin()">Registrarse</button>
+  </div>
+</header>
+
+<!-- USER DROPDOWN -->
+<div class="user-dropdown" id="user-dropdown">
+  <div class="udrop-profile">
+    <div class="udrop-av">JM</div>
+    <div><div class="udrop-name">javier_m <span class="lv lv4" style="margin-left:5px;">Nivel 4</span></div><div class="udrop-stats">234 votos · 341 comentarios · 1.2k likes</div></div>
+  </div>
+  <div class="udrop-lbl">Respuestas sin leer <span class="notif-badge">3</span></div>
+  <div class="notif-item"><div class="notif-av" style="background:#FCE8F3;color:#9E1060;">LP</div><div class="notif-body"><div class="notif-text"><strong>laura_p</strong> respondió a tu comentario en <strong>¿Debería dimitir...?</strong></div><div class="notif-time">hace 18 min</div></div><div class="notif-unread-dot"></div></div>
+  <div class="notif-item"><div class="notif-av" style="background:#EDE8FC;color:#5528A8;">SF</div><div class="notif-body"><div class="notif-text"><strong>sara_f</strong> respondió a tu comentario en <strong>¿IA o persona...?</strong></div><div class="notif-time">hace 1h 20min</div></div><div class="notif-unread-dot"></div></div>
+  <div class="udrop-footer">
+    <button class="udrop-link" onclick="alert('Mi perfil')">Mi perfil</button>
+    <button class="udrop-link" onclick="alert('Ajustes')">Ajustes</button>
+    <button class="udrop-link red" onclick="doLogout()">Cerrar sesión</button>
+  </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="login-modal" onclick="closeLoginIfBg(event)">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Entrar en Fantástico</div><button class="modal-close" onclick="closeLogin()">×</button></div>
+    <div class="modal-body">
+      <div class="m-field"><label>Usuario o email</label><input type="text" id="login-user" placeholder="javier_m"></div>
+      <div class="m-field"><label>Contraseña</label><input type="password" id="login-pass" placeholder="········"></div>
+      <div class="m-error" id="login-error"></div>
+      <button class="m-submit" onclick="doLogin()">Entrar</button>
+      <div class="m-divider">o continúa con</div>
+      <button class="m-google" onclick="doLoginGoogle()">
+        <svg width="15" height="15" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Continuar con Google
+      </button>
+      <div class="m-footer">¿Sin cuenta? <span onclick="alert('Próximamente')">Regístrate gratis</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE POLL MODAL -->
+<div class="modal-overlay" id="create-modal" onclick="closeCreateIfBg(event)">
+  <div class="modal modal-lg">
+    <div class="modal-head">
+      <div><div class="modal-title">Nueva encuesta</div><div class="modal-subtitle">Revisada por el equipo editorial en 24h</div></div>
+      <button class="modal-close" onclick="closeCreatePoll()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="m-field" style="display:flex;gap:10px;align-items:center;">
+        <label style="margin:0;flex-shrink:0;font-size:12px;color:var(--t2);font-weight:500;">Tipo:</label>
+        <div style="display:flex;gap:8px;">
+          <label style="display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer;"><input type="radio" name="poll-type" value="normal" checked onchange="toggleSponsoredFlow()"> Normal</label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer;"><input type="radio" name="poll-type" value="sponsored" onchange="toggleSponsoredFlow()"> <span class="badge bg-spon">Patrocinada</span></label>
+        </div>
+      </div>
+      <div class="sec-div" style="margin:12px 0;"></div>
+      <div id="normal-flow">
+        <div class="m-field"><label>Pregunta</label><textarea id="cp-q" rows="2" placeholder="Formula una pregunta directa sobre un tema de actualidad..." oninput="updatePreview();updateChar(this,'qc',120)" maxlength="120"></textarea><div class="char-count"><span id="qc">0</span>/120</div></div>
+        <div class="m-field"><label>Opciones</label>
+          <div class="opt-field"><div class="opt-num">1</div><input type="text" id="opt1" placeholder="Primera opción" oninput="updatePreview()"></div>
+          <div class="opt-field"><div class="opt-num">2</div><input type="text" id="opt2" placeholder="Segunda opción" oninput="updatePreview()"></div>
+          <div class="opt-field"><div class="opt-num">3</div><input type="text" id="opt3" placeholder="Tercera opción (opcional)" oninput="updatePreview()"></div>
+        </div>
+        <div class="m-field"><label>Categoría</label>
+          <select id="cp-cat"><option value="">Selecciona...</option><option>Política</option><option>Sociedad</option><option>Economía</option><option>Deportes</option><option>Internacional</option><option>Tecnología</option><option>Entretenimiento</option></select>
+        </div>
+        <div class="m-field"><label>URL de referencia (opcional)</label><input type="text" id="cp-url" placeholder="https://..."></div>
+        <div class="sec-div"></div>
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:8px;">Vista previa</div>
+        <div style="background:var(--bg);border-radius:var(--rs);padding:11px;margin-bottom:12px;">
+          <div id="prev-q" style="font-family:'Fraunces',serif;font-size:14px;font-weight:300;color:var(--t3);margin-bottom:9px;font-style:italic;">Tu pregunta aparecerá aquí...</div>
+          <div id="prev-opts"></div>
+        </div>
+        <div class="info-box info-amber">Solo se publican preguntas sobre temas de actualidad relevante. Revisión en 24h.</div>
+        <div class="m-error" id="create-error"></div>
+        <button class="m-submit" onclick="submitPoll()">Enviar encuesta</button>
+      </div>
+      <div id="sponsored-flow" style="display:none;">
+        <div class="info-box info-blue">Encuestas patrocinadas: destacadas 2h en el feed y luego fluyen orgánicamente. Caducan a las 24h.</div>
+        <div class="m-field"><label>Empresa o marca</label><input type="text" id="sp-brand" placeholder="Ej: Samsung España"></div>
+        <div class="m-field"><label>Pregunta</label><textarea id="sp-q" rows="2" placeholder="¿Qué smartphone prefieres para tu día a día?" oninput="updateChar(this,'sqc',120)" maxlength="120"></textarea><div class="char-count"><span id="sqc">0</span>/120</div></div>
+        <div class="m-field"><label>Opciones</label>
+          <div class="opt-field"><div class="opt-num">1</div><input type="text" id="sp-opt1" placeholder="Primera opción"></div>
+          <div class="opt-field"><div class="opt-num">2</div><input type="text" id="sp-opt2" placeholder="Segunda opción"></div>
+        </div>
+        <div class="m-field"><label>Categoría</label>
+          <select id="sp-cat"><option value="">Selecciona...</option><option>Tecnología</option><option>Entretenimiento</option><option>Deportes</option><option>Sociedad</option></select>
+        </div>
+        <div class="sec-div"></div>
+        <div style="font-size:12px;font-weight:500;color:var(--t2);margin-bottom:9px;">Coste de publicación</div>
+        <div class="btc-box">
+          <div class="btc-amount">₿ 0.00031</div>
+          <div class="btc-eur">≈ 20€ · Tipo de cambio en tiempo real</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:7px;">24h exposición · 2h destacada · Informe incluido</div>
+        </div>
+        <div class="btc-steps">
+          <div class="btc-step"><div class="btc-step-n">1</div>Paga la cantidad exacta a la dirección Bitcoin indicada</div>
+          <div class="btc-step"><div class="btc-step-n">2</div>Verificación automática en ~10 min</div>
+          <div class="btc-step"><div class="btc-step-n">3</div>Admin valida la encuesta antes de publicarla</div>
+          <div class="btc-step"><div class="btc-step-n">4</div>Recibes confirmación y enlace de seguimiento</div>
+        </div>
+        <div class="m-error" id="sp-error"></div>
+        <button class="m-submit" style="background:var(--gold);" onclick="submitSponsored()">Proceder al pago</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal-overlay" id="pay-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Pasarela de pago</div><button class="modal-close" onclick="document.getElementById('pay-modal').classList.remove('open')">×</button></div>
+    <div class="modal-body">
+      <div class="info-box info-blue">Envía exactamente <strong>₿ 0.00031</strong> a esta dirección:</div>
+      <div class="btc-addr">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</div>
+      <div style="margin:13px 0;text-align:center;"><div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--rs);display:inline-block;padding:10px;"><div style="width:110px;height:110px;background:repeating-conic-gradient(#000 0% 25%, #fff 0% 50%) 0 / 8px 8px;border:2px solid #000;"></div></div><div style="font-size:11px;color:var(--t3);margin-top:5px;">QR de pago</div></div>
+      <div class="info-box info-amber">Una vez pagado, cierra esta ventana. Te notificaremos cuando se verifique.</div>
+      <button class="m-submit" onclick="document.getElementById('pay-modal').classList.remove('open');closeCreatePoll();setTimeout(()=>alert('✓ Pago registrado. Tu encuesta será validada en breve.'),200)">He realizado el pago</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD NEWS MODAL -->
+<div class="modal-overlay" id="add-news-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal-head"><div><div class="modal-title">Añadir noticia</div><div class="modal-subtitle">La comunidad votará si es relevante</div></div><button class="modal-close" onclick="document.getElementById('add-news-modal').classList.remove('open')">×</button></div>
+    <div class="modal-body">
+      <div class="info-box info-amber" style="display:flex;align-items:center;gap:8px;padding:7px 10px;"><span class="lv lv3">Nivel 3</span><span>Disponible a partir de Nivel 3 (200+ likes)</span></div>
+      <div class="m-field"><label>URL</label><input type="text" id="an-url" placeholder="https://..."></div>
+      <div class="m-field"><label>Titular</label><input type="text" id="an-title" placeholder="Ej: El Supremo condena al exministro..."></div>
+      <div class="m-field"><label>Fuente</label><input type="text" id="an-src" placeholder="Ej: El País"></div>
+      <div class="info-box info-green">Si más del 60% rechaza la noticia en 24h, se elimina automáticamente.</div>
+      <div class="m-error" id="an-error"></div>
+      <button class="m-submit" onclick="submitNews()">Proponer noticia</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div class="modal-overlay" id="profile-modal" onclick="closeProfileIfBg(event)">
+  <div class="profile-modal" id="profile-inner"></div>
+</div>
+
+<!-- MATCH LOCKED MODAL -->
+<div class="modal-overlay" id="match-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">Mensajes privados</div><button class="modal-close" onclick="document.getElementById('match-modal').classList.remove('open')">×</button></div>
+    <div class="modal-body">
+      <div style="text-align:center;padding:10px 0 16px;">
+        <div style="font-size:36px;margin-bottom:10px;">❤</div>
+        <div style="font-family:'Fraunces',serif;font-size:17px;font-weight:300;color:var(--text);margin-bottom:8px;">Se necesita match mutuo</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.6;">Para enviar un mensaje privado, ambas personas deben haber marcado "Me interesa" en el perfil del otro. Así garantizamos que la conversación es bienvenida.</div>
+      </div>
+      <div class="info-box info-rose" style="text-align:center;">Primero ve al perfil de <span id="match-target-name" style="font-weight:500;"></span> y pulsa "¡Tú molas!".</div>
+      <button class="m-submit" style="background:var(--rose);" onclick="document.getElementById('match-modal').classList.remove('open')">Entendido</button>
+    </div>
+  </div>
+</div>
+
+<!-- SHARE POPUP -->
+<div class="share-backdrop" id="share-backdrop" onclick="closeShare()">
+  <div class="share-popup" onclick="event.stopPropagation()">
+    <button class="share-close" onclick="closeShare()">×</button>
+    <div class="share-title">Compartir encuesta</div>
+    <div class="share-url">
+      <span class="share-url-text" id="share-url-text">https://fantastico.net/encuesta/123</span>
+      <button class="share-copy-btn" onclick="copyShareUrl()">Copiar</button>
+    </div>
+    <div class="share-nets">
+      <button class="share-net" onclick="alert('Compartir en WhatsApp')">
+        <svg class="share-net-icon" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.557 4.123 1.528 5.857L0 24l6.335-1.508A11.956 11.956 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.885 0-3.653-.518-5.168-1.419l-.371-.22-3.761.895.952-3.667-.242-.38A9.97 9.97 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+        WhatsApp
+      </button>
+      <button class="share-net" onclick="alert('Compartir en Telegram')">
+        <svg class="share-net-icon" viewBox="0 0 24 24" fill="#26A5E4"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Telegram
+      </button>
+      <button class="share-net" onclick="alert('Compartir en X')">
+        <svg class="share-net-icon" viewBox="0 0 24 24" fill="#000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.258 5.63 5.906-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        Twitter/X
+      </button>
+      <button class="share-net" onclick="alert('Compartir en Facebook')">
+        <svg class="share-net-icon" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Facebook
+      </button>
+      <button class="share-net" onclick="copyShareUrl()">
+        <svg class="share-net-icon" viewBox="0 0 24 24" fill="none" stroke="#6B6258" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        Copiar enlace
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH MODAL -->
+<div class="modal-overlay" id="search-modal" onclick="closeSearchIfBg(event)">
+  <div class="modal modal-lg" style="max-width:500px;">
+    <div class="modal-head">
+      <div><div class="modal-title">Buscar personas</div><div class="modal-subtitle">Encuentra gente afín por opiniones, ubicación y más</div></div>
+      <button class="modal-close" onclick="closeSearch()">×</button>
+    </div>
+    <div class="modal-body">
+      <div id="search-level-gate" style="display:none;">
+        <div class="info-box info-amber">El buscador de personas está disponible a partir de <strong>Nivel 2</strong>. ¡Sigue participando para desbloquearlo!</div>
+        <div style="display:flex;justify-content:center;padding:10px 0;">
+          <span class="lv lv2" style="font-size:13px;padding:6px 16px;">Nivel 2 requerido</span>
+        </div>
+      </div>
+      <div id="search-content">
+        <div class="filter-row">
+          <div class="filter-grp"><label>Ubicación</label><input type="text" id="sf-loc" placeholder="Madrid, Barcelona..."></div>
+          <div class="filter-grp"><label>Edad</label>
+            <select id="sf-age">
+              <option value="">Cualquiera</option>
+              <option>18-25</option><option>26-35</option><option>36-45</option><option>46-55</option><option>56+</option>
+            </select>
+          </div>
+          <div class="filter-grp"><label>Género</label>
+            <select id="sf-sex">
+              <option value="">Cualquiera</option>
+              <option>Hombre</option><option>Mujer</option><option>No binario</option>
+            </select>
+          </div>
+        </div>
+        <div class="filter-row">
+          <div class="filter-grp"><label>Afinidad global</label>
+            <select id="sf-aff">
+              <option value="">Cualquiera</option>
+              <option value="90">90%+ (muy afín)</option>
+              <option value="70">70%+ (bastante afín)</option>
+              <option value="50">50%+ (algo afín)</option>
+            </select>
+          </div>
+          <div class="filter-grp"><label>Afinidad en categoría</label>
+            <select id="sf-cat">
+              <option value="">Todas</option>
+              <option>Política</option><option>Sociedad</option><option>Economía</option>
+              <option>Ciencia</option><option>Deportes</option><option>Tecnología</option>
+            </select>
+          </div>
+          <div class="filter-grp"><label>Ordenar por</label>
+            <select id="sf-sort">
+              <option>Más afín</option>
+              <option>Más activo</option>
+              <option>Más reciente</option>
+              <option>Más comentarios</option>
+            </select>
+          </div>
+        </div>
+        <button class="m-submit" style="margin-bottom:14px;" onclick="doSearch()">Buscar</button>
+        <div id="search-results" class="search-results"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HELP VIEW -->
+<div id="help-view">
+  <div style="max-width:760px;margin:0 auto;padding:24px 16px;">
+    <button class="back-btn" onclick="showView('feed',null)" style="margin-bottom:20px;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>
+      Volver al feed
+    </button>
+    <div class="help-section">
+      <div class="help-h1">Bienvenido a Fantástico 👋</div>
+      <p class="help-p">Fantástico es una comunidad donde las personas se conocen a través de sus opiniones. Aquí lo que importa no es tu foto de perfil, sino cómo ves el mundo. Vota en encuestas de actualidad, debate, expresa lo que piensas y descubre personas con las que conectas de verdad, ya sea para hacer amigos o algo más.</p>
+      <p class="help-p">A diferencia de otras redes sociales, en Fantástico el contenido es la opinión. Cada encuesta es un punto de partida para una conversación real.</p>
+    </div>
+    <div class="help-section">
+      <div class="help-h2">¿A quién va dirigido?</div>
+      <p class="help-p">A cualquier persona mayor de 18 años con ganas de debatir temas de actualidad y conocer gente que piensa. No hacen falta conocimientos especiales: si tienes una opinión, ya puedes participar.</p>
+      <p class="help-p">También está orientado a quienes buscan conexiones más profundas que las de las redes sociales tradicionales. La afinidad en Fantástico se mide por cómo votas, no por cómo te ves.</p>
+    </div>
+    <div class="help-section">
+      <div class="help-h2">Cómo funciona</div>
+      <p class="help-p"><strong>Encuestas:</strong> cada día se publican nuevas encuestas sobre temas de actualidad. Vota en cualquiera sin necesidad de registro. Para comentar necesitas una cuenta.</p>
+      <p class="help-p"><strong>Comentarios:</strong> tras votar, puedes dejar tu opinión. Tu voto queda visible junto a tu comentario para dar contexto. Los mejores comentarios suben gracias a los likes de la comunidad.</p>
+      <p class="help-p"><strong>Noticias relacionadas:</strong> cada encuesta tiene una o más noticias de contexto. Los usuarios de Nivel 3 o superior pueden proponer noticias adicionales, que la comunidad valida o rechaza.</p>
+      <p class="help-p"><strong>¡Tú molas!:</strong> si un perfil te interesa, pulsa el botón. Cuando el interés es mutuo se crea un match y podéis enviarse mensajes privados.</p>
+    </div>
+    <div class="help-section">
+      <div class="help-h2">Sistema de Niveles</div>
+      <p class="help-p">Tu nivel sube automáticamente según tu actividad: comentarios publicados y likes recibidos. Cada nivel desbloquea nuevas funcionalidades.</p>
+      <div class="help-level-grid">
+        <div class="help-lv-card"><span class="lv lv1">Nivel 1</span><div class="help-lv-name">Curioso</div><div class="help-lv-req">0 puntos</div><div class="help-lv-perks">Votar · Leer comentarios · Dar likes</div></div>
+        <div class="help-lv-card"><span class="lv lv2">Nivel 2</span><div class="help-lv-name">Participante</div><div class="help-lv-req">80 puntos</div><div class="help-lv-perks">Comentar · Perfil público · Buscador de personas</div></div>
+        <div class="help-lv-card"><span class="lv lv3">Nivel 3</span><div class="help-lv-name">Habitual</div><div class="help-lv-req">300 puntos</div><div class="help-lv-perks">Proponer noticias · Match y mensajes privados</div></div>
+        <div class="help-lv-card"><span class="lv lv4">Nivel 4</span><div class="help-lv-name">Influyente</div><div class="help-lv-req">800 puntos</div><div class="help-lv-perks">Subir encuestas · Moderación ligera · Badge destacado</div></div>
+        <div class="help-lv-card"><span class="lv lv5">Nivel 5</span><div class="help-lv-name">Referente</div><div class="help-lv-req">2000 puntos</div><div class="help-lv-perks">Todas las funciones · Soporte prioritario · Verificación</div></div>
+      </div>
+      <p class="help-p" style="margin-top:10px;">Los puntos se calculan así: cada comentario vale 2 puntos + 1 punto por cada like recibido en tus comentarios.</p>
+    </div>
+    <div class="help-section">
+      <div class="help-h2">Preguntas frecuentes</div>
+      <div class="help-faq">
+        <div class="help-q" onclick="this.classList.toggle('open')">
+          <div class="help-q-title">¿Puedo votar sin registrarme? <span class="help-q-chev">▾</span></div>
+          <div class="help-q-body">Sí. Cualquier persona puede votar en cualquier encuesta sin necesidad de crear una cuenta. Solo necesitas cuenta para comentar, dar likes y acceder a las funciones sociales.</div>
+        </div>
+        <div class="help-q" onclick="this.classList.toggle('open')">
+          <div class="help-q-title">¿Cómo funciona la afinidad? <span class="help-q-chev">▾</span></div>
+          <div class="help-q-body">La afinidad mide el porcentaje de encuestas en que tú y otra persona habéis votado la misma opción. A mayor coincidencia, mayor afinidad. Se calcula automáticamente para las encuestas donde ambos hayáis participado.</div>
+        </div>
+        <div class="help-q" onclick="this.classList.toggle('open')">
+          <div class="help-q-title">¿Qué es un match? <span class="help-q-chev">▾</span></div>
+          <div class="help-q-body">Cuando tú pulsas "¡Tú molas!" en el perfil de alguien y esa persona también lo pulsa en el tuyo, se crea un match mutuo. Solo entonces podéis enviarse mensajes privados. Es nuestra forma de garantizar que el contacto es bienvenido por ambas partes.</div>
+        </div>
+        <div class="help-q" onclick="this.classList.toggle('open')">
+          <div class="help-q-title">¿Qué pasa con los comentarios de usuarios que ignoro? <span class="help-q-chev">▾</span></div>
+          <div class="help-q-body">Sus comentarios aparecen opacados con un aviso. Puedes clicar para verlos puntualmente. Puedes ignorar a alguien solo en un hilo concreto o de forma permanente desde cualquier comentario.</div>
+        </div>
+        <div class="help-q" onclick="this.classList.toggle('open')">
+          <div class="help-q-title">¿Cómo se moderan los contenidos? <span class="help-q-chev">▾</span></div>
+          <div class="help-q-body">Combinamos moderación editorial (el equipo de Fantástico revisa las encuestas antes de publicarlas) con moderación comunitaria (los usuarios pueden reportar comentarios y votar sobre la relevancia de noticias propuestas). Los usuarios de niveles altos colaboran en la moderación.</div>
+        </div>
+        <div class="help-q" onclick="this.classList.toggle('open')">
+          <div class="help-q-title">¿Puedo proponer mi propia encuesta? <span class="help-q-chev">▾</span></div>
+          <div class="help-q-body">Sí. Cualquier usuario puede proponer una encuesta desde el botón "Subir encuesta". El equipo editorial la revisará en 24 horas. Solo se publican encuestas sobre temas de actualidad relevante. Las empresas también pueden crear encuestas patrocinadas.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEED VIEW -->
+<div id="feed-view">
+  <div class="wrap" style="padding-top:20px;">
+    <aside class="sl">
+      <div class="panel">
+        <div class="cat-panel-hdr">
+          <div class="panel-lbl" style="margin-bottom:0;">Categorías</div>
+          <button class="cat-expand-btn open" id="cat-toggle" onclick="toggleCatPanel()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="cat-panel-body expanded" id="cat-panel-body">
+          <div id="cat-tree"></div>
+        </div>
+      </div>
+      <div class="panel" id="users-panel">
+        <div class="cat-panel-hdr">
+          <div class="wgt-title" style="margin-bottom:0;">Usuarios</div>
+          <button class="cat-expand-btn open" onclick="togglePanel(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="cat-panel-body expanded" style="margin-top:8px;">
+          <div class="wgt-tabs">
+            <button class="wt on" onclick="uTab('activos',this)">Activos</button>
+            <button class="wt" onclick="uTab('votados',this)">Votados</button>
+            <button class="wt" onclick="uTab('nuevos',this)">Nuevos</button>
+          </div>
+          <div class="wgt-tabs" id="period-tabs">
+            <button class="wt on" onclick="uPeriod('24h',this)">24h</button>
+            <button class="wt" onclick="uPeriod('7d',this)">7 días</button>
+          </div>
+          <div id="users-list"></div>
+        </div>
+      </div>
+    </aside>
+    <main>
+      <div id="feed">
+        <div class="feed-bar">
+          <button class="btn-new-poll-feed" onclick="openCreatePoll()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:13px;height:13px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Subir encuesta
+          </button>
+          <div class="sort-grp">
+            <button class="srt on" onclick="ssort('actividad',this)">Actividad</button>
+            <button class="srt" onclick="ssort('recientes',this)">Recientes</button>
+          </div>
+        </div>
+        <div id="list"></div>
+      </div>
+      <div id="thread">
+        <button class="back-btn" onclick="goBack()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg> Volver al feed</button>
+        <div id="thread-inner"></div>
+      </div>
+    </main>
+    <aside class="sr">
+      <div class="panel">
+        <div class="cat-panel-hdr">
+          <div class="wgt-title" style="margin-bottom:0;">Más votado hoy</div>
+          <button class="cat-expand-btn open" onclick="togglePanel(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="cat-panel-body expanded" style="margin-top:8px;">
+          <div class="trend" onclick="openThread(5)"><span class="trend-n">1</span><div><div class="trend-qt">¿Expulsión correcta España-Francia?</div><div class="trend-v">2.3k votos</div></div></div>
+          <div class="trend" onclick="openThread(1)"><span class="trend-n">2</span><div><div class="trend-qt">¿Debería dimitir un político condenado?</div><div class="trend-v">2.4k votos</div></div></div>
+          <div class="trend" onclick="openThread(2)"><span class="trend-n">3</span><div><div class="trend-qt">¿Controlarías el móvil de tu hijo?</div><div class="trend-v">1.1k votos</div></div></div>
+          <div class="trend" onclick="openThread(3)"><span class="trend-n">4</span><div><div class="trend-qt">¿Harías huelga con descuento?</div><div class="trend-v">890 votos</div></div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="cat-panel-hdr">
+          <div class="wgt-title" style="margin-bottom:0;">Noticias comentadas</div>
+          <button class="cat-expand-btn open" onclick="togglePanel(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="cat-panel-body expanded" style="margin-top:8px;">
+          <div class="nwi"><img class="nwi-img" src="https://picsum.photos/seed/juzgado44/108/84" alt=""><div><div class="nwi-t">El Supremo dicta sentencia histórica</div><div class="nwi-meta">El País · <span class="nwi-cmts">287 comentarios</span></div></div></div>
+          <div class="nwi"><img class="nwi-img" src="https://picsum.photos/seed/futbol33/108/84" alt=""><div><div class="nwi-t">La selección pasa a cuartos con polémica</div><div class="nwi-meta">Marca · <span class="nwi-cmts">312 comentarios</span></div></div></div>
+          <div class="nwi"><img class="nwi-img" src="https://picsum.photos/seed/techlaw/108/84" alt=""><div><div class="nwi-t">La UE obliga a identificar contenidos de IA</div><div class="nwi-meta">Wired ES · <span class="nwi-cmts">198 comentarios</span></div></div></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- STATS VIEW -->
+<div id="stats-view">
+  <div style="margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <div><div style="font-family:'Fraunces',serif;font-size:22px;font-weight:300;color:var(--text);margin-bottom:3px;">Estadísticas de Fantástico</div><div style="font-size:12px;color:var(--t3);">Datos públicos · Actualizado cada hora</div></div>
+    <div class="sort-grp" id="stats-period"><button class="srt on" onclick="statsPeriod('24h',this)">24 horas</button><button class="srt" onclick="statsPeriod('7d',this)">7 días</button><button class="srt" onclick="statsPeriod('30d',this)">30 días</button></div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="sc-label">Votos totales</div><div class="sc-val" id="sv-votes">8,412</div><div class="sc-delta up">↑ 18% vs ayer</div></div>
+    <div class="stat-card"><div class="sc-label">Comentarios</div><div class="sc-val" id="sv-cmts">1,204</div><div class="sc-delta up">↑ 12% vs ayer</div></div>
+    <div class="stat-card"><div class="sc-label">Usuarios activos</div><div class="sc-val" id="sv-users">3,841</div><div class="sc-delta dn">↓ 3% vs ayer</div></div>
+    <div class="stat-card"><div class="sc-label">Encuestas activas</div><div class="sc-val" id="sv-polls">31</div><div class="sc-delta up">↑ 5 nuevas hoy</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-panel"><div class="chart-title">Votos por hora (hoy)</div><canvas id="chart-hourly" height="160"></canvas></div>
+    <div class="chart-panel"><div class="chart-title">Actividad diaria (7 días)</div><canvas id="chart-daily" height="160"></canvas></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-panel"><div class="chart-title">Distribución por categoría</div><canvas id="chart-cats" height="180"></canvas></div>
+    <div class="chart-panel"><div class="chart-title">Tipo de participación</div><canvas id="chart-part" height="180"></canvas></div>
+  </div>
+  <div class="chart-panel">
+    <div class="chart-title">Encuestas más activas</div>
+    <table class="top-polls-table">
+      <thead><tr><th>Pregunta</th><th>Categoría</th><th>Votos</th><th>Comentarios</th><th>Engagement</th></tr></thead>
+      <tbody>
+        <tr><td>¿Expulsión correcta España-Francia?</td><td>Deportes</td><td>2,297</td><td>541</td><td><span class="eng-pill eng-3" style="display:inline-flex;"><span class="eng-dot"></span>Muy activa</span></td></tr>
+        <tr><td>¿Debería dimitir un político condenado?</td><td>Política</td><td>2,400</td><td>387</td><td><span class="eng-pill eng-3" style="display:inline-flex;"><span class="eng-dot"></span>Muy activa</span></td></tr>
+        <tr><td>¿Controlarías el móvil de tu hijo?</td><td>Sociedad</td><td>1,100</td><td>214</td><td><span class="eng-pill eng-2" style="display:inline-flex;"><span class="eng-dot"></span>En alza</span></td></tr>
+        <tr><td>¿IA o persona?</td><td>Tecnología</td><td>1,100</td><td>203</td><td><span class="eng-pill eng-2" style="display:inline-flex;"><span class="eng-dot"></span>En alza</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+/* ---- DATA ---- */
+const catTree=[
+  {id:'all',label:'Todo',dot:'#A89E94',total:42,subs:[]},
+  {id:'Patrocinados',label:'★ Patrocinados',dot:null,total:2,subs:[],sponsored:true},
+  {id:'Política',label:'Política',dot:'#2B60D4',total:12,subs:['Partidos','Instituciones','Elecciones','Corrupción','Justicia']},
+  {id:'Sociedad',label:'Sociedad',dot:'#C41A7A',total:9,subs:['Familia','Educación','Salud','Género','Religión','Famosos']},
+  {id:'Economía',label:'Economía',dot:'#128A52',total:6,subs:['Laboral','Vivienda','Empresas','Mercados','Consumo']},
+  {id:'Ciencia',label:'Ciencia',dot:'#1A7AB8',total:5,subs:['Biología','Física y cosmos','Medio ambiente','Tecnología médica','Investigación']},
+  {id:'Deportes',label:'Deportes',dot:'#D46A00',total:8,subs:['Fútbol','Baloncesto','Tenis','Fórmula 1','Pádel','Otros']},
+  {id:'Internacional',label:'Internacional',dot:'#0A8A6A',total:5,subs:['Europa','EEUU','Oriente Medio','Asia','Latinoamérica']},
+  {id:'Tecnología',label:'Tecnología',dot:'#7240CC',total:4,subs:['Inteligencia artificial','Redes sociales','Privacidad','Gadgets','Videojuegos']},
+  {id:'Entretenimiento',label:'Entretenimiento',dot:'#B020A0',total:3,subs:['Cine','Música','Series','Literatura','Cómics']},
+];
+const badgeMap={Política:'bg-pol',Sociedad:'bg-soc',Economía:'bg-eco',Tecnología:'bg-tec',Deportes:'bg-dep',Internacional:'bg-int',Entretenimiento:'bg-ent',Patrocinados:'bg-spon'};
+
+const NOW=Date.now(),H=3600000;
+const POLL_DURATION=24*H;
+
+const polls=[
+  {id:0,cat:'Patrocinados',sponsored:true,brand:'Samsung España',createdAt:NOW-1*H,vpm:8,
+   q:'¿Con qué dispositivo realizas más videollamadas de trabajo?',
+   opts:['Smartphone','Portátil','Tablet'],votes:[612,489,201],comments:84,
+   creator:{uid:'carlos_v',av:'CV',ac:'#EDE8FC',at:'#5528A8'},
+   news:[{t:'Samsung lidera ventas de gama alta en España por tercer año',s:'Xataka',d:'hoy',ok:22,ko:4,myVote:null}],
+   cmts:[{id:'cs1',u:'carlos_v',av:'CV',ac:'#EDE8FC',at:'#5528A8',si:0,sl:'Smartphone',txt:'Desde que trabajo en remoto el móvil lo es todo.',likes:43,time:'hace 30min'},
+         {id:'cs2',u:'ana_r',av:'AR',ac:'#FCE8F3',at:'#9E1060',si:1,sl:'Portátil',txt:'Para videoconferencias largas necesito pantalla grande.',likes:38,time:'hace 45min'}]
+  },
+  {id:1,cat:'Política',sponsored:false,createdAt:NOW-2*H,vpm:14,
+   q:'¿Debería dimitir un político condenado aunque la pena sea suspendida?',
+   opts:['Sí, siempre','No necesariamente','No lo sé'],votes:[1340,756,304],comments:387,
+   creator:{uid:'javier_m',av:'JM',ac:'#E8EFFC',at:'#1A3FA8'},
+   news:[{t:'El Supremo condena al exministro a 3 años con suspensión de pena',s:'El País',d:'hoy',ok:42,ko:8,myVote:null},{t:'La oposición exige su dimisión inmediata',s:'El Mundo',d:'hoy',ok:38,ko:5,myVote:null},{t:'El partido descarta movimientos internos',s:'Público',d:'hace 3h',ok:29,ko:14,myVote:null}],
+   cmts:[{id:'c1',u:'javier_m',av:'JM',ac:'#E8EFFC',at:'#1A3FA8',si:0,sl:'Sí, siempre',txt:'Una condena es una condena. Que no vayas a la cárcel no significa que seas inocente. La ejemplaridad es lo mínimo que se le puede pedir a quien representa al ciudadano.',likes:834,time:'hace 1h'},
+         {id:'c2',u:'laura_p',av:'LP',ac:'#FCE8F3',at:'#9E1060',si:1,sl:'No necesariamente',txt:'Depende del delito. No es lo mismo una condena por fraude que una multa de tráfico. Meter todo en el mismo saco sirve para el discurso fácil.',likes:412,time:'hace 2h'},
+         {id:'c3',u:'r_garcia',av:'RG',ac:'#E3F5EC',at:'#0A6835',si:0,sl:'Sí, siempre',txt:'Si fuera un trabajador normal, una condena así le costaría el puesto. ¿Por qué los políticos tienen que ser diferentes?',likes:298,time:'hace 3h'}]
+  },
+  {id:2,cat:'Sociedad',sponsored:false,createdAt:NOW-5*H,vpm:6,
+   q:'¿Está bien que los padres lean los mensajes del móvil de sus hijos menores?',
+   opts:['Sí, hasta cierta edad','No, nunca','Depende del caso'],votes:[528,418,154],comments:214,
+   creator:{uid:'ana_r',av:'AR',ac:'#FCE8F3',at:'#9E1060'},
+   news:[{t:'Un estudio revela que el 60% de los padres vigilan el móvil de sus hijos',s:'La Vanguardia',d:'ayer',ok:31,ko:7,myVote:null},{t:'Nueva ley de menores y redes sociales',s:'20 Minutos',d:'hace 3 días',ok:22,ko:12,myVote:null},{t:'Psicólogos alertan del control parental excesivo',s:'El Confidencial',d:'hace 4 días',ok:18,ko:9,myVote:null}],
+   cmts:[{id:'c5',u:'ana_r',av:'AR',ac:'#FCE8F3',at:'#9E1060',si:1,sl:'No, nunca',txt:'La confianza se construye hablando, no espiando.',likes:612,time:'hace 1h'},
+         {id:'c6',u:'pedro_m',av:'PM',ac:'#E8EFFC',at:'#1A3FA8',si:0,sl:'Sí, hasta cierta edad',txt:'Con 11 o 12 años sí. Hay depredadores en internet.',likes:489,time:'hace 2h'},
+         {id:'c7',u:'sara_f',av:'SF',ac:'#EDE8FC',at:'#5528A8',si:2,sl:'Depende del caso',txt:'Lo que hay que hacer es hablar con ellos, no vigilarlos.',likes:201,time:'hace 3h'}]
+  },
+  {id:3,cat:'Economía',sponsored:false,createdAt:NOW-8*H,vpm:3,
+   q:'¿Harías huelga aunque te descontaran el sueldo?',
+   opts:['Sí, el derecho por encima del dinero','No, no me lo puedo permitir','Dependería de la causa'],votes:[365,392,133],comments:156,
+   creator:{uid:'txema_k',av:'TK',ac:'#E3F5EC',at:'#0A6835'},
+   news:[{t:'La huelga de transportes paraliza el norte del país',s:'El Mundo',d:'hoy',ok:28,ko:4,myVote:null},{t:'La patronal y sindicatos fracasan en la negociación',s:'Expansión',d:'ayer',ok:19,ko:6,myVote:null},{t:'¿Qué dice la ley sobre el descuento salarial?',s:'Cinco Días',d:'hace 2 días',ok:15,ko:8,myVote:null}],
+   cmts:[{id:'c8',u:'txema_k',av:'TK',ac:'#E3F5EC',at:'#0A6835',si:0,sl:'Sí',txt:'Los derechos que tenemos los consiguieron personas que sí se jugaron el sueldo.',likes:521,time:'hace 30min'},
+         {id:'c9',u:'ivan_b',av:'IB',ac:'#FBE9E3',at:'#C93910',si:1,sl:'No',txt:'El lujo de hacer huelga es de quien puede permitírselo.',likes:388,time:'hace 2h'}]
+  },
+  {id:4,cat:'Tecnología',sponsored:false,createdAt:NOW-11*H,vpm:4,
+   q:'¿Deberías poder saber siempre si estás hablando con una IA o con una persona?',
+   opts:['Sí, es un derecho básico','No, el contexto lo deja claro','Solo en ciertos contextos'],votes:[687,142,271],comments:203,
+   creator:{uid:'sara_f',av:'SF',ac:'#EDE8FC',at:'#5528A8'},
+   news:[{t:'La UE aprueba la norma que obliga a identificar contenidos de IA',s:'El País',d:'hace 2 días',ok:44,ko:6,myVote:null},{t:'OpenAI lanza modo conversación que imita el habla humana',s:'Wired',d:'hace 3 días',ok:31,ko:11,myVote:null}],
+   cmts:[{id:'c11',u:'sara_f',av:'SF',ac:'#EDE8FC',at:'#5528A8',si:0,sl:'Sí, es un derecho',txt:'El consentimiento informado es básico.',likes:734,time:'hace 20min'},
+         {id:'c12',u:'marcos_d',av:'MD',ac:'#E8EFFC',at:'#1A3FA8',si:2,sl:'Solo en ciertos contextos',txt:'En atención médica o legal, sí. En un chatbot de una tienda, ¿a quién le importa?',likes:312,time:'hace 1h'},
+         {id:'c13',u:'laura_p',av:'LP',ac:'#FCE8F3',at:'#9E1060',si:1,sl:'No necesariamente',txt:'Llevamos décadas leyendo artículos escritos por periodistas fantasma.',likes:178,time:'hace 2h'}]
+  },
+  {id:5,cat:'Deportes',sponsored:false,createdAt:NOW-1*H,vpm:28,
+   q:'¿Fue correcta la expulsión del árbitro en el España-Francia?',
+   opts:['Sí, roja clara','No, fue exagerada','No lo vi / No sé'],votes:[892,1204,201],comments:541,
+   creator:{uid:'pepe_gotera',av:'PG',ac:'#FFF0E0',at:'#934A00'},
+   news:[{t:'El árbitro del España-Francia genera polémica en toda Europa',s:'Marca',d:'hoy',ok:87,ko:12,myVote:null},{t:'La UEFA abre expediente al árbitro del partido',s:'As',d:'hace 2h',ok:74,ko:8,myVote:null},{t:'Los jugadores franceses piden explicaciones',s:"L'Équipe",d:'hoy',ok:61,ko:19,myVote:null}],
+   cmts:[{id:'c14',u:'pepe_gotera',av:'PG',ac:'#FFF0E0',at:'#934A00',si:1,sl:'No, fue exagerada',txt:'Llevan años con el mismo árbitro favoreciendo a España en torneos importantes.',likes:1203,time:'hace 40min'},
+         {id:'c15',u:'txema_k',av:'TK',ac:'#E3F5EC',at:'#0A6835',si:0,sl:'Sí, roja clara',txt:'El replay lo deja claro. Pisó la clavícula con intención.',likes:876,time:'hace 50min'},
+         {id:'c16',u:'javier_m',av:'JM',ac:'#E8EFFC',at:'#1A3FA8',si:1,sl:'No, fue exagerada',txt:'Un poco de contexto: el francés llevaba tres amarillas previas. El árbitro estaba muy condicionado.',likes:412,time:'hace 1h'}]
+  }
+];
+
+const SC=[{bg:'var(--accent-bg)',c:'var(--accent)'},{bg:'#FCE8F3',c:'#9E1060'},{bg:'#E3F5EC',c:'#0A6835'},{bg:'#EDE8FC',c:'#5528A8'},{bg:'#FFF0E0',c:'#934A00'},{bg:'#f3ede4',c:'var(--t3)'}];
+
+/* User profiles with dating fields */
+const userProfiles={
+  javier_m:{av:'JM',ac:'#E8EFFC',at:'#1A3FA8',name:'javier_m',fullname:'Javier Morales',location:'Madrid, España',age:34,sex:'Hombre',bio:'Abogado. Fan del debate político y del Atleti. Nunca me callo.',joined:'Enero 2024',votes:234,comments:341,likesRec:1240,winRate:68,avgLikes:3.6,affinity:82,
+    voteHistory:[{q:'¿Debería dimitir un político condenado?',cat:'Política',stance:'Sí, siempre',sc:SC[0],likes:834,time:'hace 2h'},{q:'¿Harías huelga con descuento?',cat:'Economía',stance:'Sí',sc:SC[2],likes:521,time:'hace 8h'},{q:'¿IA o persona?',cat:'Tecnología',stance:'Solo en ciertos contextos',sc:SC[3],likes:178,time:'hace 1 día'},{q:'¿Expulsión correcta España-Francia?',cat:'Deportes',stance:'No, fue exagerada',sc:SC[4],likes:412,time:'hace 1h'}],
+    cmtHistory:[{q:'¿Debería dimitir un político condenado?',txt:'Una condena es una condena. Que no vayas a la cárcel no significa que seas inocente.',likes:834,time:'hace 2h'},{q:'¿Expulsión correcta España-Francia?',txt:'Un poco de contexto: el francés llevaba tres amarillas previas.',likes:412,time:'hace 1h'},{q:'¿Harías huelga?',txt:'Si todos pensamos solo en el bolsillo, nunca conseguiremos nada.',likes:198,time:'hace 8h'}]
+  },
+  ana_r:{av:'AR',ac:'#FCE8F3',at:'#9E1060',name:'ana_r',fullname:'Ana Rodríguez',location:'Barcelona, España',age:29,sex:'Mujer',bio:'Periodista. Me interesa la sociedad y la educación.',joined:'Marzo 2024',votes:312,comments:487,likesRec:2100,winRate:71,avgLikes:4.3,affinity:61,
+    voteHistory:[{q:'¿Controlar el móvil de tus hijos?',cat:'Sociedad',stance:'No, nunca',sc:SC[1],likes:612,time:'hace 5h'},{q:'¿Debería dimitir el político?',cat:'Política',stance:'No necesariamente',sc:SC[1],likes:299,time:'hace 3h'},{q:'¿IA o persona?',cat:'Tecnología',stance:'No necesariamente',sc:SC[1],likes:178,time:'hace 11h'}],
+    cmtHistory:[{q:'¿Controlar el móvil de tus hijos?',txt:'La confianza se construye hablando, no espiando.',likes:612,time:'hace 5h'},{q:'¿IA o persona?',txt:'Llevamos décadas leyendo artículos escritos por periodistas fantasma.',likes:178,time:'hace 11h'}]
+  },
+  txema_k:{av:'TK',ac:'#E3F5EC',at:'#0A6835',name:'txema_k',fullname:'Txema Kortazar',location:'Bilbao, País Vasco',age:41,sex:'Hombre',bio:'Sindicalista. Creo en los derechos laborales y en el Athletic.',joined:'Febrero 2024',votes:189,comments:298,likesRec:987,winRate:55,avgLikes:3.3,affinity:44,
+    voteHistory:[{q:'¿Harías huelga con descuento?',cat:'Economía',stance:'Sí',sc:SC[2],likes:521,time:'hace 8h'},{q:'¿Expulsión correcta España-Francia?',cat:'Deportes',stance:'Sí, roja clara',sc:SC[0],likes:876,time:'hace 1h'}],
+    cmtHistory:[{q:'¿Harías huelga?',txt:'Los derechos que tenemos los consiguieron personas que sí se jugaron el sueldo.',likes:521,time:'hace 8h'},{q:'¿Expulsión correcta España-Francia?',txt:'El replay lo deja claro. Pisó la clavícula con intención.',likes:876,time:'hace 1h'}]
+  },
+  sara_f:{av:'SF',ac:'#EDE8FC',at:'#5528A8',name:'sara_f',fullname:'Sara Fernández',location:'Valencia, España',age:32,sex:'Mujer',bio:'Investigadora en ética tecnológica. Doctora en filosofía.',joined:'Abril 2024',votes:276,comments:312,likesRec:3200,winRate:76,avgLikes:10.3,affinity:73,
+    voteHistory:[{q:'¿IA o persona?',cat:'Tecnología',stance:'Sí, es un derecho',sc:SC[0],likes:734,time:'hace 20min'},{q:'¿Controlar el móvil de tus hijos?',cat:'Sociedad',stance:'Depende del caso',sc:SC[5],likes:201,time:'hace 5h'}],
+    cmtHistory:[{q:'¿IA o persona?',txt:'El consentimiento informado es básico. Si no sabes con quién hablas, no puedes tomar decisiones libres.',likes:734,time:'hace 20min'},{q:'¿Controlar el móvil?',txt:'Lo que hay que hacer es hablar con ellos, no vigilarlos.',likes:201,time:'hace 5h'}]
+  },
+  pepe_gotera:{av:'PG',ac:'#FFF0E0',at:'#934A00',name:'pepe_gotera',fullname:'Pepe Gotera',location:'Sevilla, España',age:58,sex:'Hombre',bio:'Jubilado. Veo todos los partidos.',joined:'Mayo 2024',votes:88,comments:124,likesRec:487,winRate:48,avgLikes:3.9,affinity:31,
+    voteHistory:[{q:'¿Expulsión correcta España-Francia?',cat:'Deportes',stance:'No, fue exagerada',sc:SC[4],likes:1203,time:'hace 1h'}],
+    cmtHistory:[{q:'¿Expulsión correcta España-Francia?',txt:'Llevan años con el mismo árbitro favoreciendo a España en torneos importantes.',likes:1203,time:'hace 1h'}]
+  },
+  laura_p:{av:'LP',ac:'#FCE8F3',at:'#9E1060',name:'laura_p',fullname:'Laura Pérez',location:'Zaragoza, España',age:27,sex:'Mujer',bio:'Profesora. Leo mucho antes de opinar.',joined:'Junio 2024',votes:142,comments:198,likesRec:623,winRate:62,avgLikes:3.1,affinity:58,
+    voteHistory:[{q:'¿Debería dimitir el político?',cat:'Política',stance:'No necesariamente',sc:SC[1],likes:299,time:'hace 2h'},{q:'¿IA o persona?',cat:'Tecnología',stance:'No necesariamente',sc:SC[1],likes:178,time:'hace 11h'}],
+    cmtHistory:[{q:'¿Debería dimitir el político?',txt:'Depende del delito. No es lo mismo una condena por fraude que una multa de tráfico.',likes:412,time:'hace 2h'}]
+  },
+};
+const fallback={av:'?',ac:'#E8EFFC',at:'#1A3FA8',name:'usuario',fullname:'Usuario',location:'España',age:null,sex:null,bio:'Sin descripción.',joined:'2024',votes:5,comments:3,likesRec:8,winRate:50,avgLikes:1.0,affinity:25,voteHistory:[],cmtHistory:[]};
+
+const usersData={
+  activos:{'24h':[
+    {av:'JM',ac:'#E8EFFC',at:'#1A3FA8',name:'javier_m',val:'47 comentarios',uid:'javier_m'},
+    {av:'AR',ac:'#FCE8F3',at:'#9E1060',name:'ana_r',val:'38 comentarios',uid:'ana_r'},
+    {av:'TK',ac:'#E3F5EC',at:'#0A6835',name:'txema_k',val:'31 comentarios',uid:'txema_k'},
+    {av:'SF',ac:'#EDE8FC',at:'#5528A8',name:'sara_f',val:'29 comentarios',uid:'sara_f'},
+    {av:'LP',ac:'#FCE8F3',at:'#9E1060',name:'laura_p',val:'22 comentarios',uid:'laura_p'},
+    {av:'MD',ac:'#E8EFFC',at:'#1A3FA8',name:'marcos_d',val:'18 comentarios',uid:'marcos_d'},
+    {av:'PG',ac:'#FFF0E0',at:'#934A00',name:'pepe_gotera',val:'14 comentarios',uid:'pepe_gotera'},
+    {av:'IB',ac:'#FBE9E3',at:'#C93910',name:'ivan_b',val:'11 comentarios',uid:'ivan_b'},
+  ],'7d':[
+    {av:'AR',ac:'#FCE8F3',at:'#9E1060',name:'ana_r',val:'214 comentarios',uid:'ana_r'},
+    {av:'JM',ac:'#E8EFFC',at:'#1A3FA8',name:'javier_m',val:'198 comentarios',uid:'javier_m'},
+    {av:'SF',ac:'#EDE8FC',at:'#5528A8',name:'sara_f',val:'176 comentarios',uid:'sara_f'},
+    {av:'TK',ac:'#E3F5EC',at:'#0A6835',name:'txema_k',val:'143 comentarios',uid:'txema_k'},
+    {av:'LP',ac:'#FCE8F3',at:'#9E1060',name:'laura_p',val:'121 comentarios',uid:'laura_p'},
+    {av:'MD',ac:'#E8EFFC',at:'#1A3FA8',name:'marcos_d',val:'98 comentarios',uid:'marcos_d'},
+  ]},
+  votados:{'24h':[
+    {av:'SF',ac:'#EDE8FC',at:'#5528A8',name:'sara_f',val:'1.2k likes',top:true,uid:'sara_f'},
+    {av:'TK',ac:'#E3F5EC',at:'#0A6835',name:'txema_k',val:'987 likes',uid:'txema_k'},
+    {av:'AR',ac:'#FCE8F3',at:'#9E1060',name:'ana_r',val:'834 likes',uid:'ana_r'},
+    {av:'JM',ac:'#E8EFFC',at:'#1A3FA8',name:'javier_m',val:'756 likes',uid:'javier_m'},
+    {av:'LP',ac:'#FCE8F3',at:'#9E1060',name:'laura_p',val:'612 likes',uid:'laura_p'},
+    {av:'PG',ac:'#FFF0E0',at:'#934A00',name:'pepe_gotera',val:'487 likes',uid:'pepe_gotera'},
+  ],'7d':[
+    {av:'JM',ac:'#E8EFFC',at:'#1A3FA8',name:'javier_m',val:'5.4k likes',top:true,uid:'javier_m'},
+    {av:'SF',ac:'#EDE8FC',at:'#5528A8',name:'sara_f',val:'4.8k likes',uid:'sara_f'},
+    {av:'AR',ac:'#FCE8F3',at:'#9E1060',name:'ana_r',val:'3.9k likes',uid:'ana_r'},
+    {av:'TK',ac:'#E3F5EC',at:'#0A6835',name:'txema_k',val:'3.2k likes',uid:'txema_k'},
+    {av:'LP',ac:'#FCE8F3',at:'#9E1060',name:'laura_p',val:'2.7k likes',uid:'laura_p'},
+    {av:'PG',ac:'#FFF0E0',at:'#934A00',name:'pepe_gotera',val:'2.1k likes',uid:'pepe_gotera'},
+  ]},
+  nuevos:{'24h':[
+    {av:'MB',ac:'#E3F5EC',at:'#0A6835',name:'marina_b',val:'Hace 2 horas',uid:'marina_b'},
+    {av:'CL',ac:'#FCE8F3',at:'#9E1060',name:'carmen_l',val:'Hace 3 horas',uid:'carmen_l'},
+    {av:'RT',ac:'#EDE8FC',at:'#5528A8',name:'rafa_t',val:'Hace 4 horas',uid:'rafa_t'},
+    {av:'NG',ac:'#E8EFFC',at:'#1A3FA8',name:'noe_g',val:'Hace 5 horas',uid:'noe_g'},
+    {av:'VH',ac:'#FFF0E0',at:'#934A00',name:'victor_h',val:'Hace 6 horas',uid:'victor_h'},
+    {av:'SI',ac:'#FCE8F3',at:'#9E1060',name:'sofia_i',val:'Hace 7 horas',uid:'sofia_i'},
+  ],'7d':[
+    {av:'MB',ac:'#E3F5EC',at:'#0A6835',name:'marina_b',val:'Hace 2 horas',uid:'marina_b'},
+    {av:'CL',ac:'#FCE8F3',at:'#9E1060',name:'carmen_l',val:'Hace 3 horas',uid:'carmen_l'},
+    {av:'RT',ac:'#EDE8FC',at:'#5528A8',name:'rafa_t',val:'Hace 4 horas',uid:'rafa_t'},
+    {av:'NG',ac:'#E8EFFC',at:'#1A3FA8',name:'noe_g',val:'Hace 5 horas',uid:'noe_g'},
+    {av:'VH',ac:'#FFF0E0',at:'#934A00',name:'victor_h',val:'Lunes',uid:'victor_h'},
+    {av:'SI',ac:'#FCE8F3',at:'#9E1060',name:'sofia_i',val:'Lunes',uid:'sofia_i'},
+    {av:'PM',ac:'#E8EFFC',at:'#1A3FA8',name:'pedro_m',val:'Domingo',uid:'pedro_m'},
+    {av:'IB',ac:'#FBE9E3',at:'#C93910',name:'ivan_b',val:'Domingo',uid:'ivan_b'},
+  ]}
+};
+
+/* EMOJI AVATARS */
+const emojiAv={
+  'javier_m':'🧔🏻',
+  'ana_r':'👩🏻‍💼',
+  'txema_k':'🧑🏻‍🦱',
+  'sara_f':'👩🏻‍🔬',
+  'pepe_gotera':'👴🏼',
+  'laura_p':'👩🏼‍🏫',
+  'marcos_d':'🧑🏻‍💻',
+  'pedro_m':'👨🏽',
+  'ivan_b':'🧑🏼‍🔧',
+  'carlos_v':'🧑🏻‍💼',
+  'r_garcia':'👨🏻‍⚖️',
+  'noe_g':'🧑🏼‍🎨',
+  'marina_b':'👩🏼‍🎤',
+  'default':'🙂'
+};
+function getEmoji(uid){return emojiAv[uid]||emojiAv.default;}
+
+/* STATE */
+let activeCat='all',activeSub=null,sortMode='actividad',userVotes={},liked=new Set(),currentPoll=null;
+let uMode='activos',uPer='24h',loggedIn=false;
+let openCats=new Set();
+let chartsInit=false;
+let matches=new Set();
+let mutualMatches=new Set(['ana_r']);
+let addNewsPid=null;
+let ignoredUsers=new Set();
+let ignoredInThread=new Set();
+let savedPolls=new Set();
+
+function toggleCatPanel(){
+  const body=document.getElementById('cat-panel-body');
+  const btn=document.getElementById('cat-toggle');
+  if(!body)return;
+  const isOpen=body.classList.contains('expanded');
+  body.classList.toggle('expanded',!isOpen);
+  body.classList.toggle('collapsed',isOpen);
+  if(btn)btn.classList.toggle('open',!isOpen);
+}
+function togglePanel(btn){
+  const body=btn.closest('.panel').querySelector('.cat-panel-body');
+  if(!body)return;
+  const isOpen=body.classList.contains('expanded');
+  body.classList.toggle('expanded',!isOpen);
+  body.classList.toggle('collapsed',isOpen);
+  btn.classList.toggle('open',!isOpen);
+}
+function toggleSave(pid){
+  if(savedPolls.has(pid))savedPolls.delete(pid);else savedPolls.add(pid);
+  renderFeed();
+}
+function openShare(pid,q){
+  document.getElementById('share-url-text').textContent=`https://fantastico.net/encuesta/${pid}`;
+  document.getElementById('share-backdrop').classList.add('open');
+  document.getElementById('share-popup').classList.add('open');
+}
+function closeShare(){
+  document.getElementById('share-backdrop').classList.remove('open');
+  document.getElementById('share-popup').classList.remove('open');
+}
+function copyShareUrl(){
+  const t=document.getElementById('share-url-text').textContent;
+  navigator.clipboard?.writeText(t).catch(()=>{});
+  const btn=event.target;btn.textContent='¡Copiado!';setTimeout(()=>btn.textContent='Copiar',2000);
+}
+function openSearch(){
+  const modal=document.getElementById('search-modal');
+  modal.classList.add('open');
+  // show gate if not logged in or level < 2
+  const gate=document.getElementById('search-level-gate');
+  const content=document.getElementById('search-content');
+  if(!loggedIn){gate.style.display='block';content.style.display='none';}
+  else{gate.style.display='none';content.style.display='block';}
+}
+function closeSearch(){document.getElementById('search-modal').classList.remove('open');}
+function closeSearchIfBg(e){if(e.target===document.getElementById('search-modal'))closeSearch();}
+function doSearch(){
+  const loc=(document.getElementById('sf-loc').value||'').trim().toLowerCase();
+  const age=document.getElementById('sf-age').value;
+  const sex=document.getElementById('sf-sex').value;
+  const aff=parseInt(document.getElementById('sf-aff').value)||0;
+  const results=Object.values(userProfiles).filter(u=>{
+    if(u.name==='javier_m')return false;
+    if(loc&&!u.location.toLowerCase().includes(loc))return false;
+    if(sex&&u.sex&&u.sex!==sex)return false;
+    if(aff&&u.affinity<aff)return false;
+    return true;
+  }).sort((a,b)=>b.affinity-a.affinity);
+  const el=document.getElementById('search-results');
+  if(!results.length){el.innerHTML='<div style="font-size:13px;color:var(--t3);text-align:center;padding:12px;">Sin resultados. Prueba con otros filtros.</div>';return;}
+  el.innerHTML=results.map(u=>{
+    const em=getEmoji(u.name);const lv=getLv(u);
+    return`<div class="sr-item" onclick="closeSearch();openProfile('${u.name}')">
+      <div class="sr-av" style="background:${u.ac};">${em}</div>
+      <div class="sr-info">
+        <div class="sr-name">${u.fullname} <span style="font-size:11px;color:var(--t3);">@${u.name}</span></div>
+        <div class="sr-meta">${u.location}${u.age?` · ${u.age} años`:''}${u.sex?` · ${u.sex}`:''}</div>
+        <div style="margin-top:2px;display:flex;align-items:center;gap:8px;">
+          <span class="lv ${lv.cls}">${lv.lbl}</span>
+          <span class="sr-aff">${u.affinity}% afinidad</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+const chevD=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>`;
+function getLv(u){const s=(u.comments||0)*2+(u.likesRec||0);if(s>=2000)return{lbl:'Nivel 5',cls:'lv5'};if(s>=800)return{lbl:'Nivel 4',cls:'lv4'};if(s>=300)return{lbl:'Nivel 3',cls:'lv3'};if(s>=80)return{lbl:'Nivel 2',cls:'lv2'};return{lbl:'Nivel 1',cls:'lv1'};}
+function tot(p){return p.votes.reduce((a,b)=>a+b,0);}
+function engScore(p){const s=p.vpm*3+p.comments*0.5+(tot(p)/100);if(s>30)return{cls:'eng-3',label:'Muy activa'};if(s>12)return{cls:'eng-2',label:'En alza'};return{cls:'eng-1',label:'Activa'};}
+function hSVG(f){return f?`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`;}
+function fmt(ms){if(ms<=0)return{text:'Cerrada',urgent:false,closed:true};const h=Math.floor(ms/H),m=Math.floor((ms%H)/60000),s=Math.floor((ms%60000)/1000);return{text:`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`,urgent:ms<2*H,closed:false};}
+const clkSVG=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`;
+function timerEl(p){const t=fmt(Math.max(0,p.createdAt+POLL_DURATION-Date.now()));return `<span class="timer${t.closed?' closed':t.urgent?' urgent':' normal'}">${clkSVG}${t.text}</span>`;}
+
+/* AVATAR GRID */
+function buildAvatarGrid(p){
+  const all=[...p.cmts].sort((a,b)=>b.likes-a.likes);
+  const creator=p.creator;
+  const topLiked=all[0];
+  const pool=[];
+  pool.push({...creator,isCreator:true,isTop:false});
+  if(topLiked&&topLiked.u!==creator.uid) pool.push({uid:topLiked.u,av:topLiked.av,ac:topLiked.ac,at:topLiked.at,isCreator:false,isTop:true});
+  for(const c of all){if(pool.length>=9)break;if(!pool.find(x=>x.uid===c.u)) pool.push({uid:c.u,av:c.av,ac:c.ac,at:c.at,isCreator:false,isTop:false});}
+  const rows=[];
+  for(let i=0;i<pool.length;i+=3)rows.push(pool.slice(i,i+3));
+  const rowsH=rows.map(row=>{
+    const cells=row.map(u=>{
+      const em=getEmoji(u.uid);
+      const badge=u.isTop?`<span class="av-badge" style="background:#E8A020;color:#fff;font-size:7px;">♥</span>`:'';
+      return `<div class="av-grid-cell${u.isCreator?' creator':u.isTop?' topheart':''}" style="background:${u.ac};font-size:16px;" onclick="event.stopPropagation();openProfile('${u.uid}')" title="${u.uid}">${em}${badge}</div>`;
+    }).join('');
+    return `<div class="av-grid-row">${cells}</div>`;
+  }).join('');
+  return `<div class="av-grid">${rowsH}</div>`;
+}
+
+/* CATEGORIES */
+function renderCats(){
+  const el=document.getElementById('cat-tree');el.innerHTML='';
+  catTree.forEach(cat=>{
+    const isOpen=openCats.has(cat.id);
+    const isOn=activeCat===cat.id&&!activeSub;
+    const row=document.createElement('button');
+    row.className='cat-row'+(isOn?' on':'')+(cat.sponsored?' sponsored-cat':'');
+    const dotHtml=cat.dot?`<span class="cat-dot" style="background:${cat.dot}"></span>`:`<span style="font-size:11px;flex-shrink:0;">★</span>`;
+    row.innerHTML=`${dotHtml}${cat.label}<span class="cat-count">${cat.total}</span>${cat.subs.length?`<span class="cat-chev${isOpen?' open':''}">${chevD}</span>`:''}`;
+    row.onclick=(e)=>{e.stopPropagation();activeCat=cat.id;activeSub=null;if(cat.subs.length){if(openCats.has(cat.id))openCats.delete(cat.id);else openCats.add(cat.id);}renderCats();renderFeed();};
+    el.appendChild(row);
+    if(cat.subs.length){
+      const sub=document.createElement('div');sub.className='subcats'+(isOpen?' open':'');
+      cat.subs.forEach(s=>{
+        const isSubOn=activeCat===cat.id&&activeSub===s;
+        const sr=document.createElement('button');sr.className='subcat-row'+(isSubOn?' on':'');
+        sr.innerHTML=`<span class="subcat-dot"></span>${s}`;
+        sr.onclick=(e)=>{e.stopPropagation();activeCat=cat.id;activeSub=s;renderCats();renderFeed();};
+        sub.appendChild(sr);
+      });
+      el.appendChild(sub);
+    }
+  });
+}
+function fcat(cat){activeCat=cat;activeSub=null;renderCats();renderFeed();}
+
+/* USERS */
+function renderUsers(){
+  const data=usersData[uMode]||(uMode==='nuevos'?usersData.nuevos:usersData.activos);
+  const list=uMode==='nuevos'?(data['24h']||[]):(data[uPer]||[]);
+  document.getElementById('users-list').innerHTML=list.map((u,i)=>{
+    const up=userProfiles[u.uid]||fallback;const lv=getLv(up);
+    const em=getEmoji(u.uid);
+    const badge=uMode==='nuevos'
+      ?`<span style="font-size:9px;color:var(--accent);background:var(--accent-bg);padding:2px 7px;border-radius:99px;font-weight:500;">Nuevo</span>`
+      :`<span class="lv ${lv.cls}">${lv.lbl}</span>`;
+    return `<div class="usr-row" onclick="openProfile('${u.uid}')">
+      <span class="usr-rank">${i+1}</span>
+      <div class="usr-av" style="background:${u.ac};font-size:14px;">${em}</div>
+      <div class="usr-info"><div class="usr-name">${u.name}</div><div class="usr-val">${u.val}</div></div>
+      ${badge}
+    </div>`;
+  }).join('');
+}
+function uTab(m,el){
+  uMode=m;
+  document.querySelectorAll('#users-panel .wgt-tabs:first-of-type .wt').forEach(e=>e.classList.remove('on'));
+  el.classList.add('on');
+  const pt=document.getElementById('period-tabs');
+  if(pt)pt.style.display=m==='nuevos'?'none':'flex';
+  renderUsers();
+}
+function uPeriod(p,el){uPer=p;document.querySelectorAll('#users-panel .wgt-tabs:last-of-type .wt').forEach(e=>e.classList.remove('on'));el.classList.add('on');renderUsers();}
+
+/* MATCH BANNERS — only in dropdown, not in home */
+function renderMatchBanners(){
+  if(loggedIn)document.getElementById('user-dropdown').innerHTML=buildDropdown();
+}
+
+/* PROFILE MODAL */
+let pmTab='insights';
+function openProfile(uid){
+  const u=userProfiles[uid]||{...fallback,name:uid,fullname:uid};
+  const lv=getLv(u);
+  const em=getEmoji(uid);
+  const aff=u.affinity;const r=20;const circ=2*Math.PI*r;const dash=circ*(aff/100);
+  const isMatch=matches.has(uid);
+  // isMutual = the other person has also matched back (simulated by mutualMatches set)
+  // AND the current user has also matched them
+  const isMutual=mutualMatches.has(uid)&&matches.has(uid);
+  const hasDemoInfo=u.age||u.sex;
+  pmTab='insights';
+  const renderPmTab=()=>{
+    const el=document.getElementById('pm-tab-content');if(!el)return;
+    if(pmTab==='insights'){
+      el.innerHTML=`
+        <div class="pm-section">
+          <div class="pm-section-lbl">Actividad</div>
+          <div class="pm-stats-grid">
+            <div class="pm-stat"><span class="pm-stat-val">${u.votes}</span><span class="pm-stat-lbl">votos</span></div>
+            <div class="pm-stat"><span class="pm-stat-val">${u.comments}</span><span class="pm-stat-lbl">comentarios</span></div>
+            <div class="pm-stat"><span class="pm-stat-val">${u.likesRec}</span><span class="pm-stat-lbl">likes</span></div>
+          </div>
+        </div>
+        <div class="pm-section">
+          <div class="pm-section-lbl">Insights</div>
+          <div class="pm-insights">
+            <div class="pm-insight"><div class="pm-ins-icon" style="background:#E3F5EC;color:#0A6835;">✓</div><div style="flex:1;"><div class="pm-ins-label">Vota la opción ganadora</div><div class="pm-bar-track"><div class="pm-bar-fill" style="width:${u.winRate}%"></div></div></div><div class="pm-ins-val">${u.winRate}%</div></div>
+            <div class="pm-insight"><div class="pm-ins-icon" style="background:var(--accent-bg);color:var(--accent);">♥</div><div style="flex:1;"><div class="pm-ins-label">Likes promedio por comentario</div></div><div class="pm-ins-val">${u.avgLikes}</div></div>
+            <div class="pm-insight">
+              <svg viewBox="0 0 48 48" style="width:48px;height:48px;flex-shrink:0;">
+                <circle cx="24" cy="24" r="${r}" fill="none" stroke="var(--border)" stroke-width="4"/>
+                <circle cx="24" cy="24" r="${r}" fill="none" stroke="var(--accent)" stroke-width="4" stroke-dasharray="${dash} ${circ}" stroke-dashoffset="${circ/4}" stroke-linecap="round"/>
+                <text x="24" y="29" text-anchor="middle" font-size="11" font-weight="500" fill="var(--accent)" font-family="Fraunces,serif">${aff}%</text>
+              </svg>
+              <div style="flex:1;"><div class="pm-ins-label">Afinidad con tu perfil</div><div style="font-size:10px;color:var(--t3);margin-top:2px;">Basado en encuestas en común</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--t3);">Miembro desde ${u.joined}</div>`;
+    } else if(pmTab==='votos'){
+      const filt=u.voteHistory||[];
+      el.innerHTML=`
+        <div class="history-filters">
+          <button class="hf-btn on">Recientes</button>
+          <button class="hf-btn">Más likes</button>
+          <button class="hf-btn">Por categoría</button>
+        </div>
+        <div>
+          ${filt.length?filt.map(v=>`
+            <div class="history-item">
+              <div class="hi-icon" style="background:${v.sc.bg};color:${v.sc.c};">✓</div>
+              <div class="hi-body">
+                <div class="hi-q">${v.q}</div>
+                <div class="hi-meta">
+                  <span class="hi-stance" style="background:${v.sc.bg};color:${v.sc.c};">${v.stance}</span>
+                  <span class="hi-likes">${hSVG(false).replace('viewBox=','style="width:10px;height:10px;" viewBox=')} ${v.likes}</span>
+                  <span class="hi-time">${v.time}</span>
+                </div>
+              </div>
+            </div>`).join(''):'<div style="font-size:13px;color:var(--t3);padding:12px 0;text-align:center;">Sin historial disponible</div>'}
+        </div>`;
+    } else if(pmTab==='comentarios'){
+      const filt=u.cmtHistory||[];
+      el.innerHTML=`
+        <div class="history-filters">
+          <button class="hf-btn on">Recientes</button>
+          <button class="hf-btn">Más likes</button>
+        </div>
+        <div>
+          ${filt.length?filt.map(c=>`
+            <div class="history-item">
+              <div class="hi-icon" style="background:${u.ac};color:${u.at};font-size:14px;">${em}</div>
+              <div class="hi-body">
+                <div class="hi-q" style="font-size:11px;color:var(--t3);margin-bottom:3px;">${c.q}</div>
+                <div style="font-size:12px;color:var(--t2);line-height:1.5;margin-bottom:4px;">${c.txt}</div>
+                <div class="hi-meta">
+                  <span class="hi-likes">${hSVG(false).replace('viewBox=','style="width:10px;height:10px;" viewBox=')} ${c.likes}</span>
+                  <span class="hi-time">${c.time}</span>
+                </div>
+              </div>
+            </div>`).join(''):'<div style="font-size:13px;color:var(--t3);padding:12px 0;text-align:center;">Sin historial disponible</div>'}
+        </div>`;
+    }
+  };
+
+  document.getElementById('profile-inner').innerHTML=`
+    <div class="pm-cover">
+      <div class="pm-av-wrap"><div class="pm-av" style="background:${u.ac};font-size:22px;">${em}</div></div>
+      <button onclick="closeProfile()" style="position:absolute;top:10px;right:12px;background:rgba(0,0,0,0.3);border:none;color:#fff;font-size:18px;cursor:pointer;border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;">×</button>
+    </div>
+    <div class="pm-body">
+      <div class="pm-name-row">
+        <div class="pm-name">${u.fullname}</div>
+        <span class="lv ${lv.cls}">${lv.lbl}</span>
+        <span style="font-size:12px;color:var(--t3);">@${u.name}</span>
+      </div>
+      <div class="pm-location"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:11px;height:11px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${u.location}</div>
+      ${hasDemoInfo?`<div class="pm-demo">${u.age?`<span class="pm-demo-pill">${u.age} años</span>`:''}${u.sex?`<span class="pm-demo-pill">${u.sex}</span>`:''}</div>`:''}
+      <div class="pm-bio">${u.bio}</div>
+      ${isMutual?`<div class="match-note"><svg viewBox="0 0 24 24" fill="currentColor" style="width:13px;height:13px;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>¡Match! Podéis enviaros mensajes privados.</div>`:''}
+      <div class="pm-actions">
+        ${loggedIn&&uid!=='javier_m'?`<button class="pm-btn rose${isMatch?' matched':''}" id="match-btn-${uid}" onclick="toggleMatch('${uid}')">${isMatch?'❤ ¡Tú molas!':'♡ ¡Tú molas!'}</button>`:''}
+        <button class="pm-btn primary" onclick="${isMutual?`alert('Abriendo chat con ${u.name}...')`:`openMatchModal('${uid}')`}">Mensaje privado${!isMutual?' 🔒':''}</button>
+        <button class="pm-btn">+ Amigo</button>
+        <button class="pm-btn">Ignorar</button>
+      </div>
+      <div class="pm-tabs">
+        <button class="pm-tab on" id="ptab-insights" onclick="switchPmTab('insights','${uid}')">Perfil</button>
+        <button class="pm-tab" id="ptab-votos" onclick="switchPmTab('votos','${uid}')">Votos</button>
+        <button class="pm-tab" id="ptab-comentarios" onclick="switchPmTab('comentarios','${uid}')">Comentarios</button>
+      </div>
+      <div id="pm-tab-content"></div>
+    </div>`;
+  document.getElementById('profile-modal').classList.add('open');
+  renderPmTab();
+  window._pmRenderTab=renderPmTab;
+}
+
+function switchPmTab(tab,uid){
+  pmTab=tab;
+  document.querySelectorAll('.pm-tab').forEach(b=>b.classList.remove('on'));
+  const el=document.getElementById('ptab-'+tab);if(el)el.classList.add('on');
+  if(window._pmRenderTab)window._pmRenderTab();
+}
+
+function toggleMatch(uid){
+  if(matches.has(uid))matches.delete(uid);else matches.add(uid);
+  const btn=document.getElementById('match-btn-'+uid);
+  if(btn){btn.textContent=matches.has(uid)?'❤ ¡Tú molas!':'♡ ¡Tú molas!';btn.className='pm-btn rose'+(matches.has(uid)?' matched':'');}
+  if(matches.has('sara_f')&&!mutualMatches.has('sara_f')){mutualMatches.add('sara_f');}
+  if(matches.has('laura_p')&&!mutualMatches.has('laura_p')){mutualMatches.add('laura_p');}
+  if(loggedIn)document.getElementById('user-dropdown').innerHTML=buildDropdown();
+  renderMatchBanners();
+}
+
+function openMatchModal(uid){
+  const u=userProfiles[uid]||fallback;
+  document.getElementById('match-target-name').textContent=u.name;
+  document.getElementById('match-modal').classList.add('open');
+}
+
+function closeProfile(){document.getElementById('profile-modal').classList.remove('open');}
+function closeProfileIfBg(e){if(e.target===document.getElementById('profile-modal'))closeProfile();}
+
+/* LOGIN */
+function openLogin(){document.getElementById('login-modal').classList.add('open');}
+function closeLogin(){document.getElementById('login-modal').classList.remove('open');}
+function closeLoginIfBg(e){if(e.target===document.getElementById('login-modal'))closeLogin();}
+function doLogin(){
+  const u=document.getElementById('login-user').value.trim();
+  const p=document.getElementById('login-pass').value.trim();
+  const err=document.getElementById('login-error');
+  if(!u||!p){err.textContent='Completa todos los campos.';err.classList.add('show');return;}
+  if(p.length>=4){err.classList.remove('show');closeLogin();setLoggedIn();}
+  else{err.textContent='Contraseña incorrecta.';err.classList.add('show');}
+}
+function doLoginGoogle(){closeLogin();setLoggedIn();}
+function goHome(){
+  if(currentPoll!==null){goBack();}
+  showView('feed',null);
+}
+
+function buildDropdown(){
+  const matchArr=[...mutualMatches];
+  const matchSection=matchArr.length?`
+    <div class="udrop-lbl" style="margin-top:2px;">❤ Matches <span class="notif-badge" style="background:var(--rose);">${matchArr.length}</span></div>
+    ${matchArr.map(uid=>{const u=userProfiles[uid]||fallback;const em=getEmoji(uid);return`<div class="notif-item" onclick="closeDropdownIfOutside({target:null});openProfile('${uid}')"><div class="notif-av" style="background:${u.ac};font-size:13px;">${em}</div><div class="notif-body"><div class="notif-text"><strong>${u.name}</strong> y tú os habéis dado ¡Tú molas! · ${u.affinity}% afinidad</div><div class="notif-time">Podéis enviaros mensajes privados</div></div><div class="notif-unread-dot" style="background:var(--rose);"></div></div>`;}).join('')}`:'';
+  return`<div class="udrop-profile">
+    <div class="udrop-av" style="font-size:18px;">🧔🏻</div>
+    <div><div class="udrop-name">javier_m <span class="lv lv4" style="margin-left:5px;">Nivel 4</span></div><div class="udrop-stats">234 votos · 341 comentarios · 1.2k likes</div></div>
+  </div>
+  ${matchSection}
+  <div class="udrop-lbl" style="margin-top:2px;">💬 Respuestas sin leer <span class="notif-badge">3</span></div>
+  <div class="notif-item"><div class="notif-av" style="background:#FCE8F3;font-size:13px;">👩🏼‍🏫</div><div class="notif-body"><div class="notif-text"><strong>laura_p</strong> respondió a tu comentario en <strong>¿Debería dimitir...?</strong></div><div class="notif-time">hace 18 min</div></div><div class="notif-unread-dot"></div></div>
+  <div class="notif-item"><div class="notif-av" style="background:#EDE8FC;font-size:13px;">👩🏻‍🔬</div><div class="notif-body"><div class="notif-text"><strong>sara_f</strong> respondió a tu comentario en <strong>¿IA o persona...?</strong></div><div class="notif-time">hace 1h 20min</div></div><div class="notif-unread-dot"></div></div>
+  <div class="notif-item"><div class="notif-av" style="background:#E3F5EC;font-size:13px;">🧑🏻‍🦱</div><div class="notif-body"><div class="notif-text"><strong>txema_k</strong> dio like a tu comentario en <strong>¿Harías huelga...?</strong></div><div class="notif-time">hace 2h</div></div></div>
+  <div class="udrop-footer">
+    <button class="udrop-link" onclick="closeDropdownFn();openProfile('javier_m')">Mi perfil</button>
+    <button class="udrop-link" onclick="alert('Ajustes')">Ajustes</button>
+    <button class="udrop-link red" onclick="doLogout()">Cerrar sesión</button>
+  </div>`;
+}
+function closeDropdownFn(){document.getElementById('user-dropdown').classList.remove('open');}
+
+function setLoggedIn(){
+  loggedIn=true;
+  document.getElementById('header-right').innerHTML=`
+    <button class="hdr-icon-btn" onclick="showView('help',this)" title="Ayuda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button>
+    <button class="hnav-btn" onclick="showView('stats',this)" style="border:1px solid rgba(255,255,255,0.15);padding:5px 10px;font-size:11px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:13px;height:13px;"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Stats</button>
+    <button class="user-header-btn" onclick="toggleDropdown()" id="user-btn"><div class="user-hav" style="font-size:14px;">🧔🏻</div><span class="user-hname">javier_m</span><div class="notif-dot"></div></button>`;
+  document.getElementById('user-dropdown').innerHTML=buildDropdown();
+  document.addEventListener('click',closeDropdownIfOutside);
+  renderMatchBanners();
+}
+function doLogout(){
+  loggedIn=false;
+  document.getElementById('user-dropdown').classList.remove('open');
+  document.getElementById('header-right').innerHTML=`
+    <button class="hdr-icon-btn" onclick="showView('help',this)" title="Ayuda"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button>
+    <button class="hnav-btn" onclick="showView('stats',this)" style="border:1px solid rgba(255,255,255,0.15);padding:5px 10px;font-size:11px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:13px;height:13px;"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Stats</button>
+    <button class="btn-ghost" onclick="openLogin()">Entrar</button>
+    <button class="btn-acc" onclick="openLogin()">Registrarse</button>`;
+  document.removeEventListener('click',closeDropdownIfOutside);
+}
+function toggleDropdown(){event.stopPropagation();document.getElementById('user-dropdown').classList.toggle('open');}
+function closeDropdownIfOutside(e){const dd=document.getElementById('user-dropdown');const btn=document.getElementById('user-btn');if(dd&&!dd.contains(e.target)&&btn&&!btn.contains(e.target))dd.classList.remove('open');}
+
+/* CREATE POLL */
+function openCreatePoll(){document.getElementById('create-modal').classList.add('open');updatePreview();}
+function closeCreatePoll(){document.getElementById('create-modal').classList.remove('open');}
+function closeCreateIfBg(e){if(e.target===document.getElementById('create-modal'))closeCreatePoll();}
+function toggleSponsoredFlow(){const v=document.querySelector('input[name="poll-type"]:checked').value;document.getElementById('normal-flow').style.display=v==='normal'?'block':'none';document.getElementById('sponsored-flow').style.display=v==='sponsored'?'block':'none';}
+function updateChar(el,id){document.getElementById(id).textContent=el.value.length;}
+function updatePreview(){
+  const q=(document.getElementById('cp-q')||{value:''}).value.trim();
+  const o1=(document.getElementById('opt1')||{value:''}).value.trim();
+  const o2=(document.getElementById('opt2')||{value:''}).value.trim();
+  const o3=(document.getElementById('opt3')||{value:''}).value.trim();
+  const pq=document.getElementById('prev-q');const po=document.getElementById('prev-opts');
+  if(!pq)return;
+  pq.textContent=q||'Tu pregunta aparecerá aquí...';pq.style.color=q?'var(--text)':'var(--t3)';pq.style.fontStyle=q?'normal':'italic';
+  po.innerHTML=[o1,o2,o3].filter(Boolean).map(o=>`<div class="prev-opt">${o}</div>`).join('');
+}
+function submitPoll(){
+  const q=(document.getElementById('cp-q')||{value:''}).value.trim();
+  const o1=(document.getElementById('opt1')||{value:''}).value.trim();
+  const o2=(document.getElementById('opt2')||{value:''}).value.trim();
+  const cat=(document.getElementById('cp-cat')||{value:''}).value;
+  const err=document.getElementById('create-error');
+  if(!q||!o1||!o2||!cat){err.textContent='Completa la pregunta, al menos 2 opciones y la categoría.';err.classList.add('show');return;}
+  err.classList.remove('show');closeCreatePoll();setTimeout(()=>alert('✓ Encuesta enviada para revisión. Te notificaremos en 24h.'),100);
+}
+function submitSponsored(){
+  const brand=(document.getElementById('sp-brand')||{value:''}).value.trim();
+  const q=(document.getElementById('sp-q')||{value:''}).value.trim();
+  const err=document.getElementById('sp-error');
+  if(!brand||!q){err.textContent='Completa los campos obligatorios.';err.classList.add('show');return;}
+  err.classList.remove('show');document.getElementById('create-modal').classList.remove('open');document.getElementById('pay-modal').classList.add('open');
+}
+
+/* ADD NEWS */
+function openAddNews(pid){addNewsPid=pid;document.getElementById('add-news-modal').classList.add('open');}
+function submitNews(){
+  const url=(document.getElementById('an-url')||{value:''}).value.trim();
+  const title=(document.getElementById('an-title')||{value:''}).value.trim();
+  const src=(document.getElementById('an-src')||{value:''}).value.trim();
+  const err=document.getElementById('an-error');
+  if(!url||!title||!src){err.textContent='Completa todos los campos.';err.classList.add('show');return;}
+  err.classList.remove('show');
+  const p=polls.find(x=>x.id===addNewsPid);
+  if(p)p.news.push({t:title,s:src,d:'ahora',ok:0,ko:0,myVote:null,pending:true});
+  document.getElementById('add-news-modal').classList.remove('open');
+  document.getElementById('an-url').value='';document.getElementById('an-title').value='';document.getElementById('an-src').value='';
+  if(currentPoll===addNewsPid)openThread(addNewsPid);
+}
+function voteNews(pid,ni,v){const p=polls.find(x=>x.id===pid);const n=p.news[ni];if(n.myVote===v){n.myVote=null;if(v==='ok')n.ok--;else n.ko--;}else{if(n.myVote==='ok')n.ok--;if(n.myVote==='ko')n.ko--;n.myVote=v;if(v==='ok')n.ok++;else n.ko++;}if(currentPoll===pid)openThread(pid);}
+
+/* FEED */
+function renderFeed(){
+  let list;
+  if(activeCat==='Patrocinados')list=polls.filter(p=>p.sponsored);
+  else if(activeCat==='all'){const sp=polls.filter(p=>p.sponsored);const reg=polls.filter(p=>!p.sponsored);if(sortMode==='recientes')reg.sort((a,b)=>b.createdAt-a.createdAt);list=[...sp,...reg];}
+  else{list=polls.filter(p=>!p.sponsored&&p.cat===activeCat);if(sortMode==='recientes')list.sort((a,b)=>b.createdAt-a.createdAt);}
+
+  const el=document.getElementById('list');el.innerHTML='';
+  list.forEach((p,i)=>{
+    const total=tot(p);const winner=p.votes.indexOf(Math.max(...p.votes));
+    const top=p.cmts[0];const sc=SC[top.si]||SC[5];
+    const isLT=liked.has(top.id);
+    const mH=hSVG(isLT).replace('viewBox=','style="width:10px;height:10px;flex-shrink:0;" viewBox=');
+    const bk=badgeMap[p.cat]||'bg-pol';
+    const ni0=p.news[0];const morNews=p.news.length-1;
+    const eng=engScore(p);
+    const optsH=p.opts.map((o,j)=>{const pct=Math.round(p.votes[j]/total*100);const bc=j===0?'':j===1?' opt-bar-b':' opt-bar-c';return`<div class="opt${j===winner?' win':''}" onclick="event.stopPropagation();doVote(${p.id},${j})"><div class="opt-bar${bc}" style="width:${pct}%"></div><span class="opt-lbl">${o}</span><span class="opt-pct">${pct}%</span></div>`;}).join('');
+    const avGrid=buildAvatarGrid(p);
+    const div=document.createElement('div');
+    div.className='card'+(p.sponsored?' sponsored-card':'');
+    div.style.animationDelay=i*.06+'s';
+    div.innerHTML=`
+      ${p.sponsored?`<div class="sponsored-label"><svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>${p.brand} · Patrocinado</div>`:''}
+      <div class="card-head">
+        <div class="card-head-left">
+          <div class="card-meta">
+            ${!p.sponsored?`<span class="badge ${bk}">${p.cat}</span>`:''}
+            <span class="card-time">${p.createdAt?new Date(p.createdAt).toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'}):''}</span>
+            ${timerEl(p)}
+            ${!p.sponsored?`<span class="eng-pill ${eng.cls}"><span class="eng-dot"></span>${eng.label}</span>`:''}
+          </div>
+          <div class="card-q">${p.q}</div>
+        </div>
+        ${avGrid}
+      </div>
+      <div class="card-body">
+        <div class="opts">${optsH}</div>
+        <div class="card-foot">
+          <span class="stat">${total.toLocaleString()} votos</span>
+          <span class="stat">${p.comments} comentarios</span>
+          <div style="margin-left:auto;display:flex;gap:2px;">
+            <button class="card-act-btn${savedPolls.has(p.id)?' saved':''}" onclick="event.stopPropagation();toggleSave(${p.id})" title="${savedPolls.has(p.id)?'Guardada':'Guardar'}">
+              <svg viewBox="0 0 24 24" fill="${savedPolls.has(p.id)?'currentColor':'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+            </button>
+            <button class="card-act-btn" onclick="event.stopPropagation();openShare(${p.id},'${p.q.replace(/'/g,"\\'")}');" title="Compartir">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:14px;height:14px;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="news">
+        <div class="news-lbl">Noticia relacionada</div>
+        <div class="ni"><div class="ni-dot"></div><div><div class="ni-t">${ni0.t}</div><div class="ni-s">${ni0.s} · ${ni0.d}</div></div></div>
+        ${morNews>0?`<button class="expand-row" onclick="event.stopPropagation();openThread(${p.id})"><span class="expand-ico">${chevD}</span><span class="expand-lbl">${morNews} noticia${morNews>1?'s':''} más</span></button>`:''}
+      </div>
+      <div class="top-cmt-wrap">
+        <div class="tcp-lbl">Comentario más votado</div>
+        <div class="tcp-row">
+          <div class="tcp-av" style="background:${top.ac};font-size:14px;border-radius:var(--rav);" onclick="event.stopPropagation();openProfile('${top.u}')">${getEmoji(top.u)}</div>
+          <div class="tcp-body">
+            <div class="tcp-meta">
+              <span class="tcp-user" onclick="event.stopPropagation();openProfile('${top.u}')">${top.u}</span>
+              <span class="tcp-stance" style="background:${sc.bg};color:${sc.c}">${top.sl}</span>
+              <span class="tcp-likes">${mH} ${top.likes+(isLT?1:0)}</span>
+            </div>
+            <div class="tcp-txt">${top.txt}</div>
+          </div>
+        </div>
+        <button class="expand-row" onclick="event.stopPropagation();openThread(${p.id})"><span class="expand-ico">${chevD}</span><span class="expand-lbl">${p.comments-1} comentarios más</span></button>
+      </div>`;
+    div.onclick=()=>openThread(p.id);
+    el.appendChild(div);
+  });
+}
+
+function doVote(pid,opt){if(userVotes[pid]!==undefined)return;userVotes[pid]=opt;polls.find(p=>p.id===pid).votes[opt]++;if(currentPoll===pid)openThread(pid);else renderFeed();}
+function ssort(m,el){sortMode=m;document.querySelectorAll('.srt').forEach(e=>e.classList.remove('on'));el.classList.add('on');renderFeed();}
+
+function openThread(pid){
+  currentPoll=pid;const p=polls.find(x=>x.id===pid);
+  document.getElementById('feed').style.display='none';document.getElementById('thread').style.display='block';
+  const total=tot(p);const winner=p.votes.indexOf(Math.max(...p.votes));
+  const bk=badgeMap[p.cat]||'bg-pol';const voted=userVotes[p.id]!==undefined;
+  const eng=engScore(p);const avGrid=buildAvatarGrid(p);
+  const optsH=p.opts.map((o,j)=>{const pct=Math.round(p.votes[j]/total*100);const bc=j===0?'':j===1?' opt-bar-b':' opt-bar-c';const sel=userVotes[p.id]===j;return`<div class="opt t-opt${j===winner?' win':''}${sel?' sel':''}" onclick="doVote(${p.id},${j})"><div class="opt-bar${bc}" style="width:${pct}%"></div><span class="opt-lbl">${o}</span><span class="opt-pct">${pct}%</span></div>`;}).join('');
+  const newsH=p.news.map((n,ni)=>{const t2=n.ok+n.ko;const okP=t2?Math.round(n.ok/t2*100):0;const rej=t2>5&&okP<40;return`<div class="news-vote-row"><div class="nvr-body"><div class="nvr-title${rej?' rejected':''}">${n.t}</div><div class="nvr-meta">${n.s} · ${n.d}<span class="nvr-status ${rej?'" style="background:#FCE8F3;color:#9E1060;"':n.pending?' nvr-pending"':' nvr-approved"'}">${rej?'Rechazada':n.pending?'Pendiente':'Validada'}</span></div>${t2>0?`<div class="nvr-bar"><div class="nvr-bar-fill" style="width:${okP}%"></div></div>`:''}</div><div class="nvr-votes"><button class="nvr-vote nvr-ok${n.myVote==='ok'?' voted':''}" onclick="voteNews(${p.id},${ni},'ok')">✓ ${n.ok}</button><button class="nvr-vote nvr-ko${n.myVote==='ko'?' voted':''}" onclick="voteNews(${p.id},${ni},'ko')">✗ ${n.ko}</button></div></div>`;}).join('');
+  const cmtsH=p.cmts.map(c=>{
+    const il=liked.has(c.id);const lc=c.likes+(il?1:0);const s=SC[c.si]||SC[5];const cem=getEmoji(c.u);
+    const isIgnGlobal=ignoredUsers.has(c.u);
+    const isIgnThread=ignoredInThread.has(c.u+'_'+pid);
+    const isIgn=isIgnGlobal||isIgnThread;
+    return`<div class="cmt${isIgn?' ignored-peek':''}" id="cmt-${c.id}" onclick="${isIgn?`revealCmt('${c.id}')`:''}" >
+      <div class="cm-top"><div class="cm-av" style="background:${c.ac};font-size:14px;" onclick="openProfile('${c.u}')">${cem}</div><span class="cm-user" onclick="openProfile('${c.u}')">${c.u}</span><span class="stance" style="background:${s.bg};color:${s.c}">${c.sl}</span><span class="cm-time">${c.time}</span></div>
+      <div class="cm-txt">${c.txt}</div>
+      <div class="cm-acts">
+        <button class="like-btn${il?' liked':''}" onclick="toggleLike('${c.id}')">${hSVG(il)} ${lc}</button>
+        <div class="act-sep"></div>
+        <button class="rep-btn">Responder</button>
+        <div class="act-sep"></div>
+        <button class="rpt-btn" onclick="alert('Reportado.')">Reportar</button>
+        <div class="act-sep"></div>
+        <div class="ign-wrap">
+          <button class="ign-btn" onclick="toggleIgnMenu(this)">Ignorar ▾</button>
+          <div class="ignore-menu">
+            <button class="ign-opt" onclick="doIgnore('${c.u}','global',${pid})">Ignorar a ${c.u} siempre</button>
+            <button class="ign-opt" onclick="doIgnore('${c.u}','thread',${pid})">Ignorar solo en este hilo</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('thread-inner').innerHTML=`
+    <div class="thread-card">
+      ${p.sponsored?`<div class="sponsored-label"><svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px;"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>${p.brand} · Patrocinado</div>`:''}
+      <div class="thread-body">
+        <div class="card-meta" style="margin-bottom:10px;">
+          ${!p.sponsored?`<span class="badge ${bk}">${p.cat}</span>`:''}
+          ${timerEl(p)}
+          ${!p.sponsored?`<span class="eng-pill ${eng.cls}" style="margin-left:auto;"><span class="eng-dot"></span>${eng.label}</span>`:''}
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;">
+          <div style="flex:1;min-width:0;"><div class="thread-q">${p.q}</div></div>
+          ${avGrid}
+        </div>
+        <div class="opts">${optsH}</div>
+        <div class="thread-stats">${total.toLocaleString()} votos · ${p.comments} comentarios</div>
+        ${!voted?'<div class="vote-hint">Vota para poder comentar</div>':''}
+      </div>
+      <div class="news">
+        <div class="news-section-hdr">
+          <div style="font-size:10px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;">Noticias relacionadas</div>
+          <button class="add-news-btn${loggedIn?'':' locked'}" onclick="${loggedIn?`openAddNews(${p.id})`:'alert(\"Disponible a partir de Nivel 3\")'}" style="display:flex;align-items:center;gap:4px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:11px;height:11px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            ${loggedIn?'Añadir':'<span class="lv lv3" style="font-size:9px;">Nivel 3</span>&nbsp;Añadir'}
+          </button>
+        </div>
+        ${newsH}
+      </div>
+      <div class="divider"></div>
+      <div class="cmt-bar">
+        <div class="cmt-sort"><button class="cs on" onclick="sortCmts(this)">Más votados</button><button class="cs" onclick="sortCmts(this)">Recientes</button><button class="cs" onclick="sortCmts(this)">Por posición</button></div>
+        <span class="cmt-total">${p.comments} comentarios</span>
+      </div>
+      ${cmtsH}
+      <div class="compose">
+        <input type="text" placeholder="${voted&&loggedIn?'Escribe tu opinión...':voted?'Inicia sesión para comentar':'Vota primero para poder comentar'}" ${!voted?'disabled':''}>
+        <button class="btn-acc" style="padding:7px 13px;font-size:13px;">Enviar</button>
+      </div>
+    </div>`;
+  window.scrollTo(0,0);document.addEventListener('click',closeIgnMenus);
+}
+
+function doIgnore(uid,mode,pid){
+  if(mode==='global') ignoredUsers.add(uid);
+  else ignoredInThread.add(uid+'_'+pid);
+  closeIgnMenus();
+  if(currentPoll===pid)openThread(pid);
+}
+function revealCmt(cid){
+  const el=document.getElementById('cmt-'+cid);
+  if(el)el.classList.remove('ignored-peek');
+}
+function toggleLike(cid){liked.has(cid)?liked.delete(cid):liked.add(cid);if(currentPoll)openThread(currentPoll);else renderFeed();}
+function toggleIgnMenu(btn){event.stopPropagation();const m=btn.nextElementSibling;const was=m.classList.contains('open');closeIgnMenus();if(!was)m.classList.add('open');}
+function closeIgnMenus(){document.querySelectorAll('.ignore-menu.open').forEach(m=>m.classList.remove('open'));}
+function sortCmts(el){document.querySelectorAll('.cs').forEach(e=>e.classList.remove('on'));el.classList.add('on');}
+function goBack(){currentPoll=null;document.removeEventListener('click',closeIgnMenus);document.getElementById('feed').style.display='block';document.getElementById('thread').style.display='none';window.scrollTo(0,0);}
+
+/* TIMER TICK */
+setInterval(()=>{document.querySelectorAll('.timer').forEach(el=>{if(!el.closest('.card')&&!el.closest('.thread-card'))return;});},1000);
+
+/* VIEW SWITCH */
+function showView(v,el){
+  const views=['feed-view','stats-view','help-view'];
+  views.forEach(id=>{const e=document.getElementById(id);if(e)e.style.display='none';});
+  const target=document.getElementById(v+'-view');
+  if(target)target.style.display='block';
+  document.querySelectorAll('.hnav-btn').forEach(b=>b.classList.remove('on'));
+  if(el)el.classList.add('on');
+  if(v==='stats'&&!chartsInit){chartsInit=true;setTimeout(initCharts,100);}
+}
+
+/* STATS */
+function statsPeriod(p,el){
+  document.querySelectorAll('#stats-period .srt').forEach(b=>b.classList.remove('on'));el.classList.add('on');
+  const m={'24h':{votes:'8,412',cmts:'1,204',users:'3,841',polls:'31'},'7d':{votes:'52,340',cmts:'8,190',users:'12,400',polls:'186'},'30d':{votes:'214,100',cmts:'31,200',users:'38,900',polls:'720'}}[p];
+  document.getElementById('sv-votes').textContent=m.votes;document.getElementById('sv-cmts').textContent=m.cmts;document.getElementById('sv-users').textContent=m.users;document.getElementById('sv-polls').textContent=m.polls;
+}
+function initCharts(){
+  const f={family:"'DM Sans',sans-serif",size:11};const g='rgba(24,20,14,0.06)';const A='#C93910';const B='#378ADD';
+  new Chart(document.getElementById('chart-hourly'),{type:'bar',data:{labels:['0h','2h','4h','6h','8h','10h','12h','14h','16h','18h','20h','22h'],datasets:[{data:[120,80,60,140,340,820,1100,940,760,1200,1080,760],backgroundColor:A+'33',borderColor:A,borderWidth:1.5,borderRadius:3}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{font:f},grid:{color:g}},y:{ticks:{font:f},grid:{color:g}}}}});
+  new Chart(document.getElementById('chart-daily'),{type:'line',data:{labels:['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'],datasets:[{label:'Votos',data:[6200,7100,5800,8900,9400,12100,8412],borderColor:A,backgroundColor:A+'18',fill:true,tension:.35,pointRadius:3},{label:'Comentarios',data:[820,910,760,1100,1200,1580,1204],borderColor:B,backgroundColor:B+'18',fill:true,tension:.35,pointRadius:3}]},options:{responsive:true,plugins:{legend:{labels:{font:f,boxWidth:10}}},scales:{x:{ticks:{font:f},grid:{color:g}},y:{ticks:{font:f},grid:{color:g}}}}});
+  new Chart(document.getElementById('chart-cats'),{type:'doughnut',data:{labels:['Política','Sociedad','Deportes','Economía','Tecnología','Internacional','Entretenimiento'],datasets:[{data:[31,22,24,14,8,5,3],backgroundColor:['#378ADD','#D4537E','#EF9F27','#1D9E75','#7F77DD','#1A7AB8','#B020A0'],borderWidth:0}]},options:{responsive:true,cutout:'60%',plugins:{legend:{position:'right',labels:{font:f,boxWidth:10,padding:7}}}}});
+  new Chart(document.getElementById('chart-part'),{type:'doughnut',data:{labels:['Solo vota','Vota y comenta','Solo lee','Vota y da likes'],datasets:[{data:[48,22,18,12],backgroundColor:['#C93910','#378ADD','#D3D1C7','#EF9F27'],borderWidth:0}]},options:{responsive:true,cutout:'60%',plugins:{legend:{position:'right',labels:{font:f,boxWidth:10,padding:7}}}}});
+}
+
+/* INIT */
+renderCats();renderUsers();renderFeed();
+</script>
+</body>
+</html>
